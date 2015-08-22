@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407741690 source:/home/tjuacm/Documents/图论/网络流/HDU3435 A New Graph Game 拆点+最小费用最大流/main.cpp
+	<iostream>
+	<cstdio>
+	<queue>
+	<cstring>
+	<algorithm>
+

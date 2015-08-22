@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1406428393 source:/home/tjuacm/Documents/图论/havel-hakimi定理/POJ1659 HAVEL-HAKIMI定理应用/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<algorithm>
+

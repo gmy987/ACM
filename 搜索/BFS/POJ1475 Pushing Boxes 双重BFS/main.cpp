@@ -1,0 +1,127 @@
+#include <cstdio>
+#include <cstring>
+#include <queue>
+#include <string>
+#include <iostream>
+using namespace std;
+int dir[][2] = {{0,1},{0,-1},{1,0},{-1,0}};
+char walk[] = {'e','w','s','n'} , push[] = {'E','W','S','N'};
+string path,peoplePath;
+struct Node
+{
+    int px,py,bx,by;
+    string ans;
+};
+int r,c,visp[25][25],visb[25][25],spx,spy,sbx,sby;
+char board[25][25];
+bool judge ( int x , int y )
+{
+    return x>=0&&y>=0&&x<r&&y<c;
+}
+bool bfsPeople ( int sx , int sy , int ex , int ey , int bx , int by )
+{
+    memset( visp , 0 , sizeof(visp));
+    Node u;
+    u.px = sx,u.py =sy,u.ans = "";
+    queue<Node> q;
+    q.push(u);
+    visp[sx][sy] = 1;
+    visp[bx][by] = 1;
+    while(!q.empty())
+    {
+        u = q.front();
+        q.pop();
+        if( u.px == ex && u.py == ey )
+        {
+            peoplePath = u.ans;
+            return true;
+        }
+        Node v;
+        for( int i = 0 ; i < 4 ; i++ )
+        {
+            int ax = u.px + dir[i][0] , ay = u.py + dir[i][1];
+            if( judge(ax,ay) && board[ax][ay] != '#' && !visp[ax][ay] )
+            {
+                visp[ax][ay] = 1;
+                v.px = ax , v.py = ay;
+                v.ans = u.ans + walk[i];
+                q.push(v);
+            }
+        }
+    }
+    return false;
+}
+bool bfsBox()
+{
+    memset( visb , 0 , sizeof(visb));
+    Node u;
+    u.px = spx , u.py = spy , u.bx = sbx , u.by = sby , u.ans = "";
+    queue<Node> q;
+    q.push(u);
+    visb[sbx][sby] = 1;
+    while(!q.empty())
+    {
+        u = q.front();
+        q.pop();
+        Node v;
+        if( board[u.bx][u.by] == 'T' )
+        {
+            path = u.ans;
+            return true;
+        }
+        for( int i = 0 ; i < 4 ; i++ )
+        {
+            int nextx = u.bx + dir[i][0] , nexty = u.by + dir[i][1];
+            int prex = u.bx - dir[i][0] , prey = u.by - dir[i][1];
+            if( judge(nextx,nexty) && judge(prex,prey) && board[nextx][nexty] != '#' &&
+                board[prex][prey] != '#' && !visb[nextx][nexty])
+            {
+                peoplePath = "";
+                if(bfsPeople(u.px,u.py,prex,prey,u.bx,u.by))
+                {
+                    visb[nextx][nexty] = 1;
+                    v.px = u.bx , v.py = u.by;
+                    v.bx = nextx , v.by = nexty;
+                    v.ans = u.ans + peoplePath + push[i];
+                    q.push(v);
+                }
+            }
+        }
+    }
+    return false;
+}
+int main()
+{
+    int cnt = 1;
+    //freopen( "input.txt" , "r" , stdin );
+    while(~scanf("%d%d",&r,&c)&&r&&c)
+    {
+        memset( board , 0 , sizeof(board ));
+        for( int i = 0 ; i < r ; i++ )
+        {
+            scanf("%s",board[i]);
+            for( int j = 0 ; j < c ; j++ )
+            {
+                if(board[i][j] == 'S')
+                {
+                    spx = i;
+                    spy = j;
+                }
+                if( board[i][j] == 'B')
+                {
+                    sbx = i;
+                    sby = j;
+                }
+            }
+        }
+        path = "";
+        //for( int i = 0 ; i < r ; i++ )
+          //  cout<< board[i] << endl;
+        printf("Maze #%d\n",cnt++);
+        if(bfsBox())
+            cout<<path<<endl;
+        else
+            printf("Impossible.\n");
+        printf("\n");
+    }
+}

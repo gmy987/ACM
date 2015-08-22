@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1407481859 source:/home/tjuacm/Documents/图论/网络流/POJ3281 最大流入门/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<algorithm>
+
+1407649773 source:/home/tjuacm/Documents/图论/网络流/POJ3281 Dinging 最大流入门，拆点构图/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<algorithm>
+

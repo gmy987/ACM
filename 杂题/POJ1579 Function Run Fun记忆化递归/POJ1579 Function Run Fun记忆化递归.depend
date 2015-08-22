@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1406341815 source:/home/tjuacm/Documents/杂题/POJ1579 Function Run Fun记忆化递归/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+

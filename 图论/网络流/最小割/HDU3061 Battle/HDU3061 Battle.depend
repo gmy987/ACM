@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1408676817 source:/home/tjuacm/Documents/图论/网络流/最小割/HDU3061 Battle/main.cpp
+	<cstring>
+	<cstdio>
+	<algorithm>
+	<queue>
+

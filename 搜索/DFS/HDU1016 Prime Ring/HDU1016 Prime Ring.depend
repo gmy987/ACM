@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1406121871 source:/home/tjuacm/Documents/搜索/DFS/HDU1016 Prime Ring/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<cmath>
+

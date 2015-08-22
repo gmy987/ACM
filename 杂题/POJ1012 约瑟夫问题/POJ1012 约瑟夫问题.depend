@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405931351 source:/home/tjuacm/Documents/杂题/POJ1012 约瑟夫问题/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+

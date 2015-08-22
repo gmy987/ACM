@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1405910669 source:/home/tjuacm/Documents/搜索/BFS/POJ3414 倒水问题/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<queue>
+	<string>
+

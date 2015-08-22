@@ -1,0 +1,115 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>The transaction log for database 'csdn_ad' is full. To 
+find out why space in the log cannot be reused, see the 
+log_reuse_wait_desc column in sys.databases</title>
+        <style>
+         body {font-family:"Verdana";font-weight:normal;font-size: .7em;color:black;} 
+         p {font-family:"Verdana";font-weight:normal;color:black;margin-top: -5px}
+         b {font-family:"Verdana";font-weight:bold;color:black;margin-top: -5px}
+         H1 { font-family:"Verdana";font-weight:normal;font-size:18pt;color:red }
+         H2 { font-family:"Verdana";font-weight:normal;font-size:14pt;color:maroon }
+         pre {font-family:"Lucida Console";font-size: .9em}
+         .marker {font-weight: bold; color: black;text-decoration: none;}
+         .version {color: gray;}
+         .error {margin-bottom: 10px;}
+         .expandable { text-decoration:underline; font-weight:bold; color:navy; cursor:hand; }
+        </style>
+    </head>
+
+    <body bgcolor="white">
+
+            <span><h1>Server Error in '/' Application.<hr color="silver" size="1" width="100%"></h1>
+
+            <h2> <i>The transaction log for database 'csdn_ad' is full. 
+To find out why space in the log cannot be reused, see the 
+log_reuse_wait_desc column in sys.databases</i> </h2></span>
+
+            <font face="Arial, Helvetica, Geneva, SunSans-Regular, sans-serif ">
+
+            <b> Description: </b>An unhandled exception occurred during 
+the execution of the current web request. Please review the stack trace 
+for more information about the error and where it originated in the 
+code.
+
+            <br><br>
+
+            <b> Exception Details: </b>System.Data.SqlClient.SqlException:
+ The transaction log for database 'csdn_ad' is full. To find out why 
+space in the log cannot be reused, see the log_reuse_wait_desc column in
+ sys.databases<br><br>
+
+            <b>Source Error:</b> <br><br>
+
+            <table bgcolor="#ffffcc" width="100%">
+               <tbody><tr>
+                  <td>
+                      <code><pre>
+Line 81:             {
+Line 82:                 string sql = string.Format(sqlm1, tb, cnt, ad_type.ToMySqlString());
+<font color="red">Line 83:                 int c = DBHelper.ExecuteNonQuery(sql);
+</font>Line 84:                 if (c == 0)
+Line 85:                 {</pre></code>
+
+                  </td>
+               </tr>
+            </tbody></table>
+
+            <br>
+
+            <b> Source File: </b> e:\_website\ad.csdn.net\Log.ashx<b> &nbsp;&nbsp; Line: </b> 83
+            <br><br>
+
+            <b>Stack Trace:</b> <br><br>
+
+            <table bgcolor="#ffffcc" width="100%">
+               <tbody><tr>
+                  <td>
+                      <code><pre>
+[SqlException (0x80131904): The transaction log for database 'csdn_ad' is full. To find out why space in the log cannot be reused, see the log_reuse_wait_desc column in sys.databases]
+   System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection) +2062078
+   System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection) +5050204
+   System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning() +234
+   System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj) +2275
+   System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async) +228
+   System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(DbAsyncResult result, String methodName, Boolean sendToPipe) +326
+   System.Data.SqlClient.SqlCommand.ExecuteNonQuery() +137
+   CSDN.AD.DBHelper.ExecuteNonQuery(String sql) +101
+   CSDN.AD.Log.RecordAdRequest_new(String tb) in e:\_website\ad.csdn.net\Log.ashx:83
+   CSDN.AD.Log.ProcessRequest(HttpContext context) in e:\_website\ad.csdn.net\Log.ashx:45
+   System.Web.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute() +100
+   System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean&amp; completedSynchronously) +75
+</pre></code>
+
+                  </td>
+               </tr>
+            </tbody></table>
+
+            <br>
+
+            <hr color="silver" size="1" width="100%">
+
+            <b>Version Information:</b>&nbsp;Microsoft .NET Framework Version:4.0.30319; ASP.NET Version:4.0.30319.272
+
+            </font>
+
+    
+
+</body></html>
+<!-- 
+[SqlException]: The transaction log for database &#39;csdn_ad&#39; is full. To find out why space in the log cannot be reused, see the log_reuse_wait_desc column in sys.databases
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlCommand.RunExecuteNonQueryTds(String methodName, Boolean async)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(DbAsyncResult result, String methodName, Boolean sendToPipe)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at CSDN.AD.DBHelper.ExecuteNonQuery(String sql)
+   at CSDN.AD.Log.RecordAdRequest_new(String tb) in e:\_website\ad.csdn.net\Log.ashx:line 83
+   at CSDN.AD.Log.ProcessRequest(HttpContext context) in e:\_website\ad.csdn.net\Log.ashx:line 45
+   at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+-->
+<!-- 
+This error page might contain sensitive information because ASP.NET is configured to show verbose error messages using &lt;customErrors mode="Off"/&gt;. Consider using &lt;customErrors mode="On"/&gt; or &lt;customErrors mode="RemoteOnly"/&gt; in production environments.-->

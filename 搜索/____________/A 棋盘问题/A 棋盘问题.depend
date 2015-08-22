@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1406521678 source:/home/tjuacm/Documents/搜索/搜索练习 /A 棋盘问题/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+

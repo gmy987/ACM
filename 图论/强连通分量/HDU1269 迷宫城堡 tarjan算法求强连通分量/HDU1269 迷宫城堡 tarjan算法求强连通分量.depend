@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1408023609 source:/home/tjuacm/Documents/图论/强连通分量/HDU1269 迷宫城堡 tarjan算法求强连通分量/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+	<stack>
+	<algorithm>
+

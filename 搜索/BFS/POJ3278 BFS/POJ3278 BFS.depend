@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1405678012 source:/home/tjuacm/Documents/POJ3278 BFS/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<queue>
+

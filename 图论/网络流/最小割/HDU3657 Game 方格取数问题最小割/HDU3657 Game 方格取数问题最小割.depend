@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1408369460 source:/home/tjuacm/Documents/图论/网络流/最小割/HDU3657 Game 方格取数问题最小割/main.cpp
+	<cstdio>
+	<cstring>
+	<iostream>
+	<algorithm>
+	<queue>
+

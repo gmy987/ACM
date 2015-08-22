@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405323692 source:/home/tjuacm/Documents/2739/main.cpp
+	<iostream>
+	<cstdio>
+	<cmath>
+

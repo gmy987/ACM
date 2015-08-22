@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407500067 source:/home/tjuacm/Documents/图论/网络流/HDU2485 Destroying the Bus Station 最小费用最大流/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<algorithm>
+	<queue>
+

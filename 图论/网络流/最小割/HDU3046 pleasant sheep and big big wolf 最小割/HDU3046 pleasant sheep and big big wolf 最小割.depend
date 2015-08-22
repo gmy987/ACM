@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1408085943 source:/home/tjuacm/Documents/图论/网络流/最小割/HDU3046 pleasant sheep and big big wolf 最小割/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<algorithm>
+	<queue>
+

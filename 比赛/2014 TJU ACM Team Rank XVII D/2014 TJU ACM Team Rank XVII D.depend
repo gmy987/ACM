@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1408361697 source:/home/tjuacm/Documents/2014 TJU ACM Team Rank XVII D/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<algorithm>
+

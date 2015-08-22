@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405067364 source:/home/tjuacm/Documents/PERSONAL 2 B/main.cpp
+	<iostream>
+	<map>
+	<cstdio>
+

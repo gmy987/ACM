@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407648419 source:/home/tjuacm/Documents/图论/网络流/HDU4292 FOOD拆点网络流/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+	<algorithm>
+

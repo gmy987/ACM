@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1405995823 source:/home/tjuacm/Documents/搜索/ZOJ1091 Knight Move/main.cpp
+	<cstdio>
+	<cstring>
+	<queue>
+	<iostream>
+

@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1406976600 source:/home/tjuacm/Documents/图论/最短路/Dijkstra算法/POJ2263 Heavy Cargo/main.cpp
+	<iostream>
+	<queue>
+	<cstdio>
+	<algorithm>
+	<cstring>
+	<map>
+	<string>
+

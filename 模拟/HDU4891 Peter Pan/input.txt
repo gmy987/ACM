@@ -1,0 +1,22 @@
+9
+I'll shoot the magic arrow several
+ times on the ground, and of course
+ the arrow will leave some holes
+ on the ground. When you connect
+ three holes with three line segments,
+ you may get a triangle.
+{|It is hole! Common sense!|
+No Response, Read Problem
+ Statement|don't you know what a triangle is?}
+1
+Case $1: = >$
+5
+$/*This is my code printed in
+ proportional font, isn't it cool?*/
+printf("Definitely it is cooooooool \
+%d\n",4 * 4 * 4 * 4 * 4 * 4 * 4 * 4 * 4 
+* 4 * 4 * 4 * 4 * 4 * 4 * 4 * 4 * 4);$
+2
+$Two  space$ and {blue|
+red} color!
+

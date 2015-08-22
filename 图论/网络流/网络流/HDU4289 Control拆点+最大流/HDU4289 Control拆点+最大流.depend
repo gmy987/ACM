@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407658985 source:/home/tjuacm/Documents/图论/网络流/HDU4289 Control拆点+最大流/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<algorithm>
+	<queue>
+

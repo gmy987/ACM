@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1408450326 source:/home/tjuacm/Documents/快速幂/HDU4965 Fast Matrix Calculation/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<algorithm>
+

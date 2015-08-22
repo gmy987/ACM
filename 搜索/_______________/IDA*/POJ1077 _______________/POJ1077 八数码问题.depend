@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1406556257 source:/home/tjuacm/Documents/搜索/启发式搜索/IDA*/POJ1077 八数码问题/main.cpp
+	<iostream>
+	<cstdio>
+	<algorithm>
+	<cstring>
+

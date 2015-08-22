@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407302098 source:/home/tjuacm/Documents/图论/最短路/SPFA/HDU3440 House Man SPFA+ 差分约束/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+	<algorithm>
+

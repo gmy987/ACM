@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1405828363 source:/home/tjuacm/Documents/POJ1321 棋盘问题/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+
+1405828363 source:/home/tjuacm/Documents/搜索/DFS/POJ1321 棋盘问题/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+

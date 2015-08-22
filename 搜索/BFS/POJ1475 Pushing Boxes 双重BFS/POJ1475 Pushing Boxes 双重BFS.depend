@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1406724303 source:/home/tjuacm/Documents/搜索/BFS/POJ1475 Pushing Boxes 双重BFS/main.cpp
+	<cstdio>
+	<cstring>
+	<queue>
+	<string>
+	<iostream>
+

@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1405493229 source:/home/tjuacm/Documents/DP 背包问题/POJ2392 多重背包/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<algorithm>
+

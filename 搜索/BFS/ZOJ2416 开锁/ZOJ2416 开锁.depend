@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1405993685 source:/home/tjuacm/Documents/搜索/BFS/ZOJ2416 开锁/main.cpp
+	<cstdio>
+	<cstring>
+	<iostream>
+	<queue>
+	<cmath>
+

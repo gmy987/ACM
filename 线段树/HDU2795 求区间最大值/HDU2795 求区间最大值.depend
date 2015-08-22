@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405923002 source:/home/tjuacm/Documents/线段树/HDU2795 求区间最大值/main.cpp
+	<iostream>
+	<cstdio>
+	<algorithm>
+

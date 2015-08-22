@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1408096997 source:/home/tjuacm/Documents/图论/网络流/最小割/HDU3491 Thieves 最小割/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+	<algorithm>
+

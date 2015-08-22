@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1406769876 source:/home/tjuacm/Documents/贪心/POJ2287 Tian Ji -- The Horse Racing/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<algorithm>
+

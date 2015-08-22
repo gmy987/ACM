@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1406263981 source:/home/tjuacm/Documents/搜索/DFS/POJ1190/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+

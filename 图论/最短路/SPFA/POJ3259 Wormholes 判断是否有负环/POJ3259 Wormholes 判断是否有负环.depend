@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407150808 source:/home/tjuacm/Documents/图论/最短路/SPFA/POJ3259 Wormholes 判断是否有负环/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<algorithm>
+	<queue>
+

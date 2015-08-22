@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1406034609 source:/home/tjuacm/Documents/搜索/DFS/HDU1241/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+

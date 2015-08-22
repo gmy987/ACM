@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407759087 source:/home/tjuacm/Documents/搜索/BFS/HDU4771 Harry Potter/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+	<algorithm>
+

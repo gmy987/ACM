@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405836936 source:/home/tjuacm/Documents/HDU2553 N皇后问题/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+

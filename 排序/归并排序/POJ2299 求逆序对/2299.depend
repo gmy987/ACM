@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1404879855 source:/home/tjuacm/Documents/2299/main.cpp
+	<iostream>
+
+1404969673 source:/home/tjuacm/Documents/归并排序/POJ2299/main.cpp
+	<iostream>
+	<cstdio>
+

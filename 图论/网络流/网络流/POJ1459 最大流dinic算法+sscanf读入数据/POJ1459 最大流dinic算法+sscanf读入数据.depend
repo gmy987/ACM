@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1407473777 source:/home/tjuacm/Documents/图论/网络流/POJ1459 最大流dinic算法+sscanf读入数据/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<algorithm>
+	<cstdio>
+	<cstring>
+	<iostream>
+	<algorithm>
+

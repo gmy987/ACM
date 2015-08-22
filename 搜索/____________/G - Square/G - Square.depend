@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1406535830 source:/home/tjuacm/Documents/搜索/搜索练习 /G - Square/main.cpp
+	<iostream>
+	<cstdio>
+	<algorithm>
+	<cstring>
+

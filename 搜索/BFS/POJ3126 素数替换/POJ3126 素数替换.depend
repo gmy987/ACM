@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1405778600 source:/home/tjuacm/Documents/搜索/BFS/POJ3126 素数替换/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<cmath>
+	<queue>
+

@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405488533 source:/home/tjuacm/Documents/DP 背包问题/POJ2063 完全背包/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+

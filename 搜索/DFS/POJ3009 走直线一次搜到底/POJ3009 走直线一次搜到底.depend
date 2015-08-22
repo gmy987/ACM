@@ -1,0 +1,16 @@
+# depslib dependency file v1.0
+1405738123 source:/home/tjuacm/Documents/搜索/DFS/POJ3009 走直线一次搜到底/main.cpp
+	<cstdio>
+	<cstring>
+	<cstdlib>
+	<queue>
+	<string>
+	<stack>
+	<cmath>
+	<cctype>
+	<iostream>
+	<set>
+	<algorithm>
+	<ctime>
+	<vector>
+

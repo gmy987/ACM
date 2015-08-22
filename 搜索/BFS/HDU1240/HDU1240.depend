@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1406104569 source:/home/tjuacm/Documents/搜索/BFS/HDU1240/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+

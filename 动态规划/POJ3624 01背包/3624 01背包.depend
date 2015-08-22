@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405428616 source:/home/tjuacm/Documents/3624 01背包/main.cpp
+	<iostream>
+	<cstdio>
+	<algorithm>
+

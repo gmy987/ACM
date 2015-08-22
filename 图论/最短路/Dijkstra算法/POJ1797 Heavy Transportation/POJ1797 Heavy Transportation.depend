@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407029812 source:/home/tjuacm/Documents/图论/最短路/Dijkstra算法/POJ1797 Heavy Transportation/main.cpp
+	<iostream>
+	<cstdio>
+	<algorithm>
+	<queue>
+	<cstring>
+

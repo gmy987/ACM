@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1406251289 source:/home/tjuacm/Documents/搜索/DFS/POJ1011 Sticks 剪枝/main.cpp
+	<cstdio>
+	<iostream>
+	<cstring>
+	<algorithm>
+

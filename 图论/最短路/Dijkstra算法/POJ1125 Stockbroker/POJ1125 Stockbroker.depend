@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1406981843 source:/home/tjuacm/Documents/图论/最短路/Dijkstra算法/POJ1125 Stockbroker/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+

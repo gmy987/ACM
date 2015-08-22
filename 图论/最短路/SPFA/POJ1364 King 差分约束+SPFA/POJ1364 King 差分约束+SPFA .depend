@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1407241674 source:/home/tjuacm/Documents/图论/最短路/SPFA/POJ1364 King 差分约束+SPFA /main.cpp
+	<cstdio>
+	<cstring>
+	<iostream>
+	<queue>
+

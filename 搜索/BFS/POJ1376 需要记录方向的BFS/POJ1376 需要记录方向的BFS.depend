@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1406705360 source:/home/tjuacm/Documents/搜索/BFS/POJ1376 需要记录方向的BFS/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<algorithm>
+	<queue>
+

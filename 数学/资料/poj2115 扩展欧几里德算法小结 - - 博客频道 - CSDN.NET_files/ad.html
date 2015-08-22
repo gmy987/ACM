@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!-- saved from url=(0078)http://blog.csdn.net/common/ad.html?t=12&containerId=ad_commend&frmId=ad_frm_2 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CSDN Ad</title>
+    <style type="text/css">
+        body { margin:0px; padding:0px;}
+    </style>
+     <script src="jquery.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="div1"><style type="text/css">
+ul { margin:0px; padding:0 4px 0 0; }
+ul, x:-moz-any-link, x:default { width:90%; }
+ul li { padding:3px 0px;}
+a { font-size:12px; text-decoration:none; color:#006699; }
+a:hover { color:#000; }
+</style>
+
+<ul>
+
+<li><a href="http://blog.csdn.net/feiduclear_up/article/details/46840523" target="_blank">* Android HandlerThread 源码分析</a></li>
+
+<li><a href="http://blog.csdn.net/gsky1986/article/details/46984229" target="_blank">*storm是如何保证at least once语义的</a></li>
+
+<li><a href="http://blog.csdn.net/haogaoming123/article/details/46820631" target="_blank">*小胖学PHP总结：PHP的循环语句  </a></li>
+
+
+<li><a href="http://blog.csdn.net/luckey_zh/article/details/46780165" target="_blank">*Spring基于注解@AspectJ的AOP</a></li>
+
+
+<li><a href="http://blog.csdn.net/yorhomwang/article/details/46762221" target="_blank">*HTML5梦幻之旅：仿Qt示例Drag and Drop Robot（换装机器人） </a></li>
+
+<li><a href="http://blog.csdn.net/gsky1986/article/details/46894141" target="_blank">*学习笔记：Twitter核心数据类库团队的Hadoop优化经验</a></li>
+</ul></div>
+<script type="text/javascript">
+    window.onload = function () {
+        if (document.domain != 'blog.csdn.net') {
+            document.domain = "csdn.net";
+        }
+        //这种给广告区域赋值的方式，对于有些JS广告不能完美的显示
+        //top.document.getElementById('ad_commend').innerHTML = document.getElementById('div1').innerHTML;
+
+        var h = document.body.offsetHeight + 2;
+        setTimeout(function () {
+            if (h > 800) h = document.getElementById('div1').offsetHeight + 4;
+            try { top.document.getElementById('ad_frm_2').style.height = h + 'px'; }
+            catch (err) { }
+        }, 100);
+    };
+    $(function() {
+        $("#div1 a").click(function() {
+            top._gaq.push(['_trackEvent', 'function', 'onclick', 'blog_articles_tuijianwenzhang']);
+        });
+    });
+</script>
+
+
+</body></html>

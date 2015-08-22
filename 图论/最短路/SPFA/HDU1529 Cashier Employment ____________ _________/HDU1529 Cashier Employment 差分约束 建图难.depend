@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1407328627 source:/home/tjuacm/Documents/图论/最短路/SPFA/HDU1529 Cashier Employment 差分约束 建图难/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+	<algorithm>
+

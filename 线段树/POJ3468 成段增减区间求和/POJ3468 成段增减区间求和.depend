@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405943493 source:/home/tjuacm/Documents/线段树/POJ3468 成段增减区间求和/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+

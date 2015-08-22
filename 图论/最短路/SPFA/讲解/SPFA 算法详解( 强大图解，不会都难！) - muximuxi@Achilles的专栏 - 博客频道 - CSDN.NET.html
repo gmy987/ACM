@@ -1,0 +1,1158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <title>SPFA 算法详解(  强大图解，不会都难！) - muximuxi@Achilles的专栏
+        - 博客频道 - CSDN.NET</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="description" content="适用范围：给定的图存在负权边，这时类似Dijkstra等算法便没有了用武之地，而Bellman-Ford算法的复杂度又过高，SPFA算法便派上用场了。 我们约定有向加权图G不存在负权回路，即最短路径一定存在。当然，我们可以在执行该算法前做一次拓扑排序，以判断是否存在负权回路，但这不是我们讨论的重点。算法思想：我们用数组d记录每个结点的最短路径估计值，用邻接表来存储图G。我们采取的方法是动态">
+    <script src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ga.js" async="" type="text/javascript"></script><script src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/jquery.js" type="text/javascript"></script>
+    <script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad.js"></script>
+        <!--new top-->
+       
+        <link rel="stylesheet" href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/index.css">
+        <!--new top-->
+
+    <link rel="Stylesheet" type="text/css" href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/style_003.css">
+    <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://blog.csdn.net/kg_second/rss/list">
+    <link rel="shortcut icon" href="http://csdnimg.cn/public/favicon.ico">
+    <link type="text/css" rel="stylesheet" href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/default_big.css">
+ 
+
+<link type="text/css" rel="stylesheet" href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/bdsstyle.css"><script src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/tracking.js" charset="utf-8" type="text/javascript"></script><script src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/main_002.js" charset="utf-8" type="text/javascript"></script><link rel="stylesheet" type="text/css" href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/style.css"><link href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/style_002.css" rel="stylesheet" type="text/css"><script src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/logger.js"></script></head>
+<body><iframe style="display: none;" frameborder="0"></iframe><div style="display: block;" id="bdshare_s"><iframe id="bdsIfr" style="position:absolute;display:none;z-index:9999;" frameborder="0"></iframe><div style="display: none;" id="bdshare_l"><div id="bdshare_l_c"><h6>分享到</h6><ul><li><a href="#" class="bds_mshare mshare">一键分享</a></li><li><a href="#" class="bds_qzone qqkj">QQ空间</a></li><li><a href="#" class="bds_tsina xlwb">新浪微博</a></li><li><a href="#" class="bds_bdysc bdysc">百度云收藏</a></li><li><a href="#" class="bds_renren rrw">人人网</a></li><li><a href="#" class="bds_tqq txwb">腾讯微博</a></li><li><a href="#" class="bds_bdxc bdxc">百度相册</a></li><li><a href="#" class="bds_kaixin001 kxw">开心网</a></li><li><a href="#" class="bds_tqf txpy">腾讯朋友</a></li><li><a href="#" class="bds_tieba bdtb">百度贴吧</a></li><li><a href="#" class="bds_douban db">豆瓣网</a></li><li><a href="#" class="bds_tsohu shwb">搜狐微博</a></li><li><a href="#" class="bds_bdhome bdhome">百度新首页</a></li><li><a href="#" class="bds_sqq sqq">QQ好友</a></li><li><a href="#" class="bds_thx thx">和讯微博</a></li><li><a href="#" class="bds_more">更多...</a></li></ul><p><a href="#" class="goWebsite">百度分享</a></p></div></div></div>
+    
+   
+      <!--new top-->
+    <script id="toolbar-tpl-scriptId" fixed="true" prod="blog" skin="black" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/html.js" type="text/javascript"></script><div class="csdn-toolbar csdn-toolbar-skin-black ">        <div class="container row center-block ">          <div class="col-md-3 pull-left logo clearfix"><a href="http://www.csdn.net/?ref=toolbar" title="CSDN首页" target="_blank" class="icon"></a><a title="频道首页" href="http://blog.csdn.net/?ref=toolbar_logo" target="_blank" class="img blog-icon"></a></div>          <div class="pull-right login-wrap unlogin">            <ul class="btns">              <li class="loginlink"><a href="https://passport.csdn.net/account/login?ref=toolbar" target="_top">登录&nbsp;</a>|<a target="_top" href="https://passport.csdn.net/account/register?ref=toolbar">&nbsp;注册</a></li>              <li class="search">                <div class="icon on-search-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <form action="http://so.csdn.net/search" method="get" target="_blank">                      <input value="toolbar" name="ref" accesskey="2" type="hidden">                      <div class="border">                        <input placeholder="搜索" name="q" accesskey="2" type="text"><span class="icon-enter-sm"></span>                      </div>                    </form>                  </div>                </div>              </li>              <li class="favor">                <div class="icon on-favor-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div style="display:none;" class="favor-success"><span class="msg">收藏成功</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <div style="display:none;" class="favor-failed"><span class="icon-danger-lg"></span><span class="msg">收藏失败，请重新收藏</span>                      <div class="btns"><span class="btn btn-primary ok">确定</span></div>                    </div>                    <form role="form" class="form-horizontal favor-form">                      <div class="form-group">                        <div class="clearfix">                          <label for="input-title" class="col-sm-2 control-label">标题</label>                          <div class="col-sm-10">                            <input value="SPFA 算法详解( 强大图解，不会都难！) - muximuxi@Achilles的专栏 - 博客频道 - CSDN.NET" id="inputTitle" placeholder="" class="title form-control" type="text">                          </div>                        </div>                        <div class="alert alert-danger"><strong></strong>标题不能为空</div>                      </div>                      <div class="form-group">                        <label for="input-url" class="col-sm-2 control-label">网址</label>                        <div class="col-sm-10">                          <input value="http://blog.csdn.net/muxidreamtohit/article/details/7894298" id="input-url" placeholder="" class="url form-control" type="text">                        </div>                      </div>                      <div class="form-group">                        <label for="input-tag" class="col-sm-2 tag control-label">标签</label>                        <div class="col-sm-10">                          <input id="input-tag" class="form-control tag" type="text">                        </div>                      </div>                      <div class="form-group">                        <label for="input-description" class="description col-sm-2 control-label">摘要</label>                        <div class="col-sm-10">                          <textarea id="input-description" class="form-control description"></textarea>                        </div>                      </div>                      <div class="form-group">                        <div class="col-sm-offset-2 col-sm-10 ft">                          <div class="col-sm-4 pull-left">                            <div class="checkbox">                              <label>                                <input name="share" checked="checked" class="share" type="checkbox">公开                              </label>                            </div>                          </div>                          <div class="col-sm-8 pull-right favor-btns">                            <button type="button" class="cancel btn btn-default">取消</button>                            <button type="submit" class="submit btn btn-primary">收藏</button>                          </div>                        </div>                      </div>                    </form>                  </div>                </div>              </li>              <li class="notify">                <div style="display:none" class="number"></div>                <div style="display:none" class="icon-hasnotes-sm"></div>                <div id="header_notice_num"></div>                <div class="icon on-notify-icon">                  <div class="wrap">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div id="note1" class="csdn_note">                      <div class="box"></div>                    <iframe src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/a.html" allowtransparency="true" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent" frameborder="0"></iframe></div>                  </div>                </div>              </li>              <li class="ugc">                <div class="icon on-ugc-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <dl>                      <dt><a href="http://geek.csdn.net/news/expert?ref=toolbar" target="_blank" class="p-news clearfix"><em class="icon"></em><span>分享资讯</span></a></dt>                      <dt><a href="http://share.csdn.net/slides/new?ref=toolbar" target="_blank" class="p-doc clearfix"><em class="icon"></em><span>传PPT/文档</span></a></dt>                      <dt><a href="http://bbs.csdn.net/topics/new?ref=toolbar" target="_blank" class="p-ask clearfix"><em class="icon"></em><span>提问题</span></a></dt>                      <dt><a href="http://write.blog.csdn.net/postedit?ref=toolbar" target="_blank" class="p-blog clearfix"><em class="icon"></em><span>写博客</span></a></dt>                      <dt><a href="http://u.download.csdn.net/upload?ref=toolbar" target="_blank" class="p-src clearfix"><em class="icon"></em><span>传资源</span></a></dt>                      <dt><a href="https://code.csdn.net/projects/new?ref=toolbar" target="_blank" class="c-obj clearfix"><em class="icon"></em><span>创建项目</span></a></dt>                      <dt><a href="https://code.csdn.net/snippets/new?ref=toolbar" target="_blank" class="c-code clearfix"><em class="icon"></em><span>创建代码片</span></a></dt>                    </dl>                  </div>                </div>              </li>              <li class="profile">                <div class="icon on-profile-icon"><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/100x100.jpg" class="curr-icon-img">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                    <div class="bd">                      <dl class="clearfix">                        <dt class="pull-left img"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="avatar"><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/100x100.jpg"></a></dt>                        <dd class="info"><a target="_blank" href="http://my.csdn.net/?ref=toolbar" class="nickname"></a><a class="set-nick" href="https://passport.csdn.net/account/profile">设置昵称<span class="write-icon"></span></a><span class="dec"><a class="fill-dec" href="http://my.csdn.net/" target="_blank">编辑自我介绍，让更多人了解你<span class="write-icon"></span></a></span></dd>                      </dl>                    </div>                    <div class="ft clearfix"><a target="_blank" href="http://my.csdn.net/my/account/changepwd?ref=toolbar" class="pull-left"><span class="icon-cog"></span>帐号设置</a><a href="https://passport.csdn.net/account/logout?ref=toolbar" target="_top" class="pull-right "><span class="icon-signout"></span><span class="out">退出</span></a></div>                  </div>                </div>              </li>              <li class="apps">                <div class="icon on-apps-icon">                  <div class="wrap clearfix">                    <div class="curr-icon-wrap">                      <div class="curr-icon"></div>                    </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>社区</h5>                      </dt>                      <dd> <a href="http://blog.csdn.net/?ref=toolbar" target="_blank">博客</a></dd>                      <dd> <a href="http://bbs.csdn.net/?ref=toolbar" target="_blank">论坛</a></dd>                      <dd> <a href="http://download.csdn.net/?ref=toolbar" target="_blank">下载</a></dd>                      <dd><a href="http://share.csdn.net/?ref=toolbar" target="_blank">Share</a></dd>                      <dd><a href="http://geek.csdn.net/?ref=toolbar" target="_blank">极客头条</a></dd>                    </dl>                  </div>                  <div class="detail">                    <dl>                      <dt>                        <h5>服务</h5>                      </dt>                      <dd> <a href="https://code.csdn.net/?ref=toolbar" target="_blank">CODE</a></dd>                      <dd> <a href="http://hero.csdn.net/?ref=toolbar" target="_blank">英雄会</a></dd>                      <dd> <a href="http://huiyi.csdn.net/?ref=toolbar" target="_blank">活动</a></dd>                      <dd> <a href="http://www.csto.com/?ref=toolbar" target="_blank">CSTO</a></dd>                    </dl>                  </div>                  <div class="detail last">                    <dl>                      <dt>                        <h5>俱乐部</h5>                      </dt>                      <dd> <a href="http://cto.csdn.net/?ref=toolbar" target="_blank">CTO俱乐部</a></dd>                      <dd> <a href="http://student.csdn.net/?ref=toolbar" target="_blank">高校俱乐部</a></dd>                    </dl>                  </div>                </div>              </div>            </li>            </ul>          </div>        </div>    </div>
+     <!--new top-->
+    <div id="container">
+        <div id="header">
+    <div class="header">
+        <div id="blog_title">
+            <h2>
+                <a href="http://blog.csdn.net/muxidreamtohit">muximuxi@Achilles的专栏</a></h2>
+            <h3>菩提本无树 何处惹尘埃 仁者心动 理于气浮 仁至则无愧于心 得理则无惧于世----这就是我的道</h3>
+            <div class="clear">
+            </div>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<div id="navigator">
+    <div class="navigator_bg">
+    </div>
+    <div class="navigator">
+        <ul>
+                <li id="btnContents"><a href="http://blog.csdn.net/muxidreamtohit?viewmode=contents"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_mulu'])">
+                    <img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ico_list.gif">目录视图</span></a></li>
+                <li id="btnView"><a href="http://blog.csdn.net/muxidreamtohit?viewmode=list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_zhaiyao'])">
+                    <img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ico_summary.gif">摘要视图</span></a></li>
+                <li id="btnRss"><a href="http://blog.csdn.net/muxidreamtohit/rss/list"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_RSS'])">
+                    <img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ico_rss.gif">订阅</span></a></li>                
+
+            </ul>
+    </div>
+</div>
+<script type="text/javascript">
+    var username = "kg_second";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/muxidreamtohit";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";  
+</script>
+
+        <div id="body">
+            <div id="main">
+                <div class="main">
+<div class="notice tracking-ad" data-mod="popu_3"> 
+
+<a href="http://blog.csdn.net/blogdevteam/article/details/25387451" target="_blank">
+<font color="blue">有奖征资源，博文分享有内涵
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a target="_blank" href="http://blog.csdn.net/blogdevteam/article/details/37602759">
+<font color="red">6月推荐文章汇总 
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="http://hero.csdn.net/Question/Details?ID=624&amp;ExamID=619&amp;from=4" target="_blank">
+<font color="blue">微软Azure•英雄会编程大赛题
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a target="_blank" href="http://blog.csdn.net/csdnproduct/article/details/38110573">
+<font color="red">关注CSDN社区微信，福利多多 
+</font></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a target="_blank" href="http://bbs.csdn.net/topics/390846778">
+<font color="blue">社区问答：叶劲峰 游戏引擎架构 
+</font></a>
+
+
+
+</div>                      
+<link href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/comment1.css" type="text/css" rel="stylesheet">
+<link href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/style1.css" type="text/css" rel="stylesheet">
+<script language="JavaScript" type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/jquery_002.js"></script>
+<script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/main.js"></script>
+<div id="article_details" class="details">
+    <div class="article_title">   
+         <span class="ico ico_type_Repost"></span>
+
+
+    <h1>
+        <span class="link_title"><a href="http://blog.csdn.net/muxidreamtohit/article/details/7894298">
+        SPFA 算法详解(  强大图解，不会都难！)
+        </a></span>
+    </h1>
+</div>
+
+    <div class="article_manage">
+        <span class="link_categories">
+        分类：
+            <a href="http://blog.csdn.net/kg_second/article/category/1181770" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_fenlei']);">图论----最短路径</a> 
+        </span>
+    <span class="link_postdate">2012-08-22 09:38</span>
+    <span class="link_view" title="阅读次数">1274人阅读</span>
+    <span class="link_comments" title="评论次数"><a href="#comments" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_pinglun'])">评论</a>(0)</span>
+    <span class="link_collect"><a href="javascript:void(0);" onclick="javascript:_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shoucang']);collectArticle('SPFA 算法详解(  强大图解，不会都难！)','7894298');return false;" title="收藏">收藏</a></span>
+    <span class="link_report"><a href="#report" onclick="javascript:_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_jubao']);report(7894298,2);return false;" title="举报">举报</a></span>
+    
+</div>
+<div class="tag2box"><a href="http://www.csdn.net/tag/%e7%ae%97%e6%b3%95" target="_blank" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">算法</a><a href="http://www.csdn.net/tag/struct" target="_blank" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">struct</a><a href="http://www.csdn.net/tag/%e5%ad%98%e5%82%a8" target="_blank" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">存储</a><a href="http://www.csdn.net/tag/algorithm" target="_blank" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">algorithm</a><a href="http://www.csdn.net/tag/%e4%bc%98%e5%8c%96" target="_blank" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_tag']);">优化</a></div>
+
+    
+<div id="article_content" class="article_content">
+
+<p>适用范围：给定的图存在负权边，这时类似Dijkstra等算法便没有了用武之地，而Bellman-Ford算法的复杂度又过高，SPFA算法便
+派上用场了。 
+我们约定有向加权图G不存在负权回路，即最短路径一定存在。当然，我们可以在执行该算法前做一次拓扑排序，以判断是否存在负权回路，但这不是我们讨论的重
+点。<br>
+</p>
+<p>算法思想：我们用数组d记录每个结点的最短路径估计值，用邻接表来存储图G。我们采取的方法是动态逼近法：设立一个先进先出的队列用来保存待优化的
+结点，优化时每次取出队首结点u，并且用u点当前的最短路径估计值对离开u点所指向的结点v进行松弛操作，如果v点的最短路径估计值有所调整，且v点不在
+当前的队列中，就将v点放入队尾。这样不断从队列中取出结点来进行松弛操作，直至队列空为止<br>
+</p>
+<p>&nbsp;</p>
+<p>期望的时间复杂度O(ke)， 其中k为所有顶点进队的平均次数，可以证明k一般小于等于2。<br>
+</p>
+<p>&nbsp;</p>
+<p>实现方法：</p>
+<p>　　建立一个队列，初始时队列里只有起始点，再建立一个表格记录起始点到所有点的最短路径（该表格的初始值要赋为极大值，该点到他本身的路径赋为
+0）。然后执行松弛操作，用队列里有的点作为起始点去刷新到所有点的最短路，如果刷新成功且被刷新点不在队列中则把该点加入到队列最后。重复执行直到队列
+为空。</p>
+<p>判断有无负环：<br>
+　　如果某个点进入队列的次数超过N次则存在负环（SPFA无法处理带负环的图）</p>
+<p>&nbsp;</p>
+<p><br>
+<img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345602617_5264.png"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>首先建立起始点a到其余各点的<br>
+最短路径表格</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345602805_9056.jpg"></p>
+<p>首先源点a入队，当队列非空时：<br>
+　１、队首元素（a）出队，对以a为起始点的所有边的终点依次进行松弛操作（此处有b,c,d三个点），此时路径表格状态为：</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp; <img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345602873_9717.jpg"></p>
+<p>在松弛时三个点的最短路径估值变小了，而这些点队列中都没有出现，这些点<br>
+需要入队，此时，队列中新入队了三个结点b,c,d</p>
+<p>队首元素b点出队，对以b为起始点的所有边的终点依次进行松弛操作（此处只有e点），此时路径表格状态为：<br>
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345602957_7713.jpg"></p>
+<p>在最短路径表中，e的最短路径估值也变小了，e在队列中不存在，因此e也要<br>
+入队，此时队列中的元素为c，d，e</p>
+<p>队首元素c点出队，对以c为起始点的所有边的终点依次进行松弛操作（此处有e,f两个点），此时路径表格状态为：<br>
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345603016_7730.jpg"></p>
+<p>在最短路径表中，e，f的最短路径估值变小了，e在队列中存在，f不存在。因此<br>
+e不用入队了，f要入队，此时队列中的元素为d，e，f</p>
+<p>&nbsp;队首元素d点出队，对以d为起始点的所有边的终点依次进行松弛操作（此处只有g这个点），此时路径表格状态为：</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345603099_1587.jpg"></p>
+<p>在最短路径表中，g的最短路径估值没有变小（松弛不成功），没有新结点入队，队列中元素为f，g<br>
+</p>
+<p>队首元素f点出队，对以f为起始点的所有边的终点依次进行松弛操作（此处有d，e，g三个点），此时路径表格状态为：</p>
+<p><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345603233_8016.jpg"></p>
+<p>在最短路径表中，e，g的最短路径估值又变小，队列中无e点，e入队，队列中存在g这个点，g不用入队，此时队列中元素为g，e<br>
+</p>
+<p>队首元素g点出队，对以g为起始点的所有边的终点依次进行松弛操作（此处只有b点），此时路径表格状态为：<br>
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345603318_8736.jpg"></p>
+<p>在最短路径表中，b的最短路径估值又变小，队列中无b点，b入队，此时队列中元素为e，b<br>
+队首元素e点出队，对以e为起始点的所有边的终点依次进行松弛操作（此处只有g这个点），此时路径表格状态为：<br>
+</p>
+<p>&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345603389_6606.jpg"></p>
+<p>在最短路径表中，g的最短路径估值没变化（松弛不成功），此时队列中元素为b<br>
+</p>
+<p>队首元素b点出队，对以b为起始点的所有边的终点依次进行松弛操作（此处只有e这个点），此时路径表格状态为：<br>
+</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img alt="" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1345603389_6606.jpg"></p>
+<p>在最短路径表中，e的最短路径估值没变化（松弛不成功），此时队列为空了<br>
+</p>
+<p>最终a到g的最短路径为１４</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>program：</p>
+<p>#include&lt;cstdio&gt;<br>
+using namespace std;<br>
+struct node<br>
+{int x;<br>
+&nbsp;int value;<br>
+&nbsp;int next;<br>
+};<br>
+node e[60000];<br>
+int visited[1505],dis[1505],st[1505],queue[1000];<br>
+int main()<br>
+{<br>
+&nbsp; int n,m,u,v,w,start,h,r,cur;<br>
+&nbsp; freopen("c.in","r",stdin);<br>
+&nbsp; freopen("c.out","w",stdout); <br>
+&nbsp; while(scanf("%d%d",&amp;n,&amp;m)!=EOF)<br>
+&nbsp; {<br>
+&nbsp;&nbsp;&nbsp; for(int i=1;i&lt;=1500;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {visited[i]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dis[i]=-1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; st[i]=-1;&nbsp; //这个初始化给下边那个while循环带来影响<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;<br>
+&nbsp;&nbsp; for(int i=1;i&lt;=m;i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; scanf("%d%d%d\n",&amp;u,&amp;v,&amp;w);&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+e[i].x=v;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ //记录后继节点&nbsp;&nbsp;&nbsp; 相当于链表中的创建一个节点，并使得数据域先记录<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e[i].value=w;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+e[i].next=st[u];&nbsp;&nbsp;&nbsp;&nbsp; 
+//记录顶点节点的某一个边表节点的下标，相当于在链表中吧该边表节点的next指针先指向他的后继边表节点<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+st[u]=i;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ //把该顶点的指针指向边表节点，相当于链表中的插入中，头结点的指针改变<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp; start=1;<br>
+&nbsp;&nbsp;&nbsp; visited[start]=1;<br>
+&nbsp;&nbsp;&nbsp; dis[start]=0;<br>
+&nbsp;&nbsp;&nbsp; h=0;<br>
+&nbsp;&nbsp;&nbsp; r=1;<br>
+&nbsp;&nbsp;&nbsp; queue[r]=start;<br>
+&nbsp;&nbsp;&nbsp; while(h!=r)<br>
+&nbsp;&nbsp;&nbsp;&nbsp; {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; h=(h+1)%1000;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cur=queue[h];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int tmp=st[cur];<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; visited[cur]=0;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp; while(tmp!=-1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;if 
+(dis[e[tmp].x]&lt;dis[cur]+e[tmp].value)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ //改成大于号才对<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dis[e[tmp].x]=dis[cur]+e[tmp].value;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; if(visited[e[tmp].x]==0)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;visited[e[tmp].x]=1;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ &nbsp;r=(r+1)%1000;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ queue[r]=e[tmp].x;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tmp=e[tmp].next;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&nbsp;&nbsp;&nbsp;&nbsp; } <br>
+&nbsp;&nbsp;&nbsp; printf("%d\n",dis[n]);<br>
+&nbsp; }<br>
+&nbsp; return 0;&nbsp;&nbsp; <br>
+}</p>
+<p><br>
+&nbsp;</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(没有质量，就出数量)&nbsp; 下面一文转载出处：<a href="http://blog.csdn.net/morgan_xww/article/details/6279596">http://blog.csdn.net/morgan_xww/article/details/6279596</a></p>
+<div class="dp-highlighter nogutter bg_cpp:nogutter:nocontrols">
+<div class="bar"></div>
+<ol class="dp-cpp">
+<li class="alt"><span><span class="comment">/*</span> </span></li><li><span><span class="comment">SPFA(Shortest Path Faster Algorithm) [图的存储方式为邻接表]</span></span></li><li class="alt"><span><span class="comment">是Bellman-Ford算法的一种队列实现，减少了不必要的冗余计算。</span></span></li><li><span><span class="comment">算法大致流程是用一个队列来进行维护。 初始时将源加入队列。 每次从队列中取出一个元素，</span></span></li><li class="alt"><span><span class="comment">并对所有与他相邻的点进行松弛，若某个相邻的点松弛成功，则将其入队。 直到队列为空时算法结束。</span></span></li><li><span><span class="comment">它可以在O(kE)的时间复杂度内求出源点到其他所有点的最短路径，可以处理负边。</span> </span>
+</li><li class="alt"><span><span class="comment"></span></span></li><li><span><span class="comment">SPFA 在形式上和BFS非常类似，不同的是BFS中一个点出了队列就不可能重新进入队列，但是SPFA中</span></span></li><li class="alt"><span><span class="comment">一个点可能在出队列之后再次被放入队列，也就是一个点改进过其它的点之后，过了一段时间可能本</span></span></li><li><span><span class="comment">身被改进，于是再次用来改进其它的点，这样反复迭代下去。</span> </span></li><li class="alt"><span><span class="comment"></span></span></li><li><span><span class="comment">判断有无负环：如果某个点进入队列的次数超过V次则存在负环（SPFA无法处理带负环的图）。</span></span></li><li class="alt"><span><span class="comment"></span></span></li><li><span><span class="comment">SPFA算法有两个优化算法 SLF 和 LLL：</span> </span></li><li class="alt"><span><span class="comment">SLF：Small Label First 策略，设要加入的节点是j，队首元素为i，若dist(j)&lt;dist(i)，则将j插入队首，</span></span></li><li><span><span class="comment">否则插入队尾。</span> </span></li><li class="alt"><span><span class="comment">LLL：Large Label Last 策略，设队首元素为i，队列中所有dist值的平均值为x，若dist(i)&gt;x则将i插入</span></span></li><li><span><span class="comment">到队尾，查找下一元素，直到找到某一i使得dist(i)&lt;=x，则将i出对进行松弛操作。</span></span></li><li class="alt"><span><span class="comment">引用网上资料，SLF 可使速度提高 15 ~ 20%；SLF + LLL 可提高约 50%。</span></span></li><li><span><span class="comment">在实际的应用中SPFA的算法时间效率不是很稳定，为了避免最坏情况的出现，通常使用效率更加稳定的Dijkstra算法。</span></span></li><li class="alt"><span><span class="comment">*/</span><span>&nbsp; </span></span></li><li><span>&nbsp; </span></li><li class="alt"><span><span class="comment">//用数组实现邻接表存储，pnt[i,0]表示与i相邻的结点个数，pnt[i,1...k]存储与i相邻的点</span><span>&nbsp;</span></span></li><li><span><span class="datatypes">int</span><span>&nbsp; pnt[MAXN][MAXN];&nbsp; </span></span></li><li class="alt"><span><span class="datatypes">int</span><span>&nbsp; map[MAXN][MAXN]; </span>
+<span class="comment">//map[i,j]为初始输入的i到j的距离，并且map[i,i]=0;未知的map[i,j]=INF;</span><span>&nbsp;</span></span></li><li><span><span class="datatypes">int</span><span>&nbsp; dis[MAXN];&nbsp; </span></span></li><li class="alt"><span><span class="datatypes">char</span><span> vst[MAXN];&nbsp; </span>
+</span></li><li><span>&nbsp; </span></li><li class="alt"><span><span class="datatypes">int</span><span> SPFA(</span><span class="datatypes">int</span><span> n,</span><span class="datatypes">int</span><span> s)&nbsp;</span></span></li><li><span>{&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="datatypes">int</span><span> i, pri, end, p, t;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp; memset(vst, 0, <span class="keyword">sizeof</span><span>(vst));&nbsp; </span>
+</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="keyword">for</span><span> (i=1; i&lt;=n; i++)&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dis[i] = INF;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; dis[s] = 0;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; vst[s] = 1;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; Q[0] = s; pri = 0; end = 1;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">while</span><span> (pri &lt; end)&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p = Q[pri];&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">for</span><span> (i=1; i&lt;=pnt[p][0]; i++)&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t = pnt[p][i];&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="comment">//先释放，释放成功后再判断是否要加入队列</span><span>&nbsp; </span>
+</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">if</span><span> (dis[p]+map[p][t] &lt; dis[t])&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dis[t] = dis[p]+map[p][t];&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">if</span><span> (!vst[t])&nbsp; </span>
+</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ Q[end++] = t;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ vst[t] = 1;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vst[p] = 0;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pri++;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">return</span><span> 1;&nbsp; </span></span></li><li class="alt"><span>}&nbsp; </span></li></ol>
+</div>
+<div class="dp-highlighter nogutter bg_cpp:nogutter:nocontrols"><div class="bar"></div><ol class="dp-cpp" start="1"><li class="alt"><span><span class="comment">/*</span>&nbsp;</span></li><li class=""><span><span class="comment">SPFA(Shortest&nbsp;Path&nbsp;Faster&nbsp;Algorithm)&nbsp;[图的存储方式为邻接表]</span>&nbsp;</span></li><li class="alt"><span><span class="comment">是Bellman-Ford算法的一种队列实现，减少了不必要的冗余计算。</span>&nbsp;</span></li><li class=""><span><span class="comment">算法大致流程是用一个队列来进行维护。&nbsp;初始时将源加入队列。&nbsp;每次从队列中取出一个元素，</span>&nbsp;</span></li><li class="alt"><span><span class="comment">并对所有与他相邻的点进行松弛，若某个相邻的点松弛成功，则将其入队。&nbsp;直到队列为空时算法结束。</span>&nbsp;</span></li><li class=""><span><span class="comment">它可以在O(kE)的时间复杂度内求出源点到其他所有点的最短路径，可以处理负边。</span>&nbsp;</span></li><li class="alt"><span><span class="comment"></span>&nbsp;</span></li><li class=""><span><span class="comment">SPFA&nbsp;在形式上和BFS非常类似，不同的是BFS中一个点出了队列就不可能重新进入队列，但是SPFA中</span>&nbsp;</span></li><li class="alt"><span><span class="comment">一个点可能在出队列之后再次被放入队列，也就是一个点改进过其它的点之后，过了一段时间可能本</span>&nbsp;</span></li><li class=""><span><span class="comment">身被改进，于是再次用来改进其它的点，这样反复迭代下去。</span>&nbsp;</span></li><li class="alt"><span><span class="comment"></span>&nbsp;</span></li><li class=""><span><span class="comment">判断有无负环：如果某个点进入队列的次数超过V次则存在负环（SPFA无法处理带负环的图）。</span>&nbsp;</span></li><li class="alt"><span><span class="comment"></span>&nbsp;</span></li><li class=""><span><span class="comment">SPFA算法有两个优化算法&nbsp;SLF&nbsp;和&nbsp;LLL：</span>&nbsp;</span></li><li class="alt"><span><span class="comment">SLF：Small&nbsp;Label&nbsp;First&nbsp;策略，设要加入的节点是j，队首元素为i，若dist(j)&lt;dist(i)，则将j插入队首，</span>&nbsp;</span></li><li class=""><span><span class="comment">否则插入队尾。</span>&nbsp;</span></li><li class="alt"><span><span class="comment">LLL：Large&nbsp;Label&nbsp;Last&nbsp;策略，设队首元素为i，队列中所有dist值的平均值为x，若dist(i)&gt;x则将i插入</span>&nbsp;</span></li><li class=""><span><span class="comment">到队尾，查找下一元素，直到找到某一i使得dist(i)&lt;=x，则将i出对进行松弛操作。</span>&nbsp;</span></li><li class="alt"><span><span class="comment">引用网上资料，SLF&nbsp;可使速度提高&nbsp;15&nbsp;~&nbsp;20%；SLF&nbsp;+&nbsp;LLL&nbsp;可提高约&nbsp;50%。</span>&nbsp;</span></li><li class=""><span><span class="comment">在实际的应用中SPFA的算法时间效率不是很稳定，为了避免最坏情况的出现，通常使用效率更加稳定的Dijkstra算法。</span>&nbsp;</span></li><li class="alt"><span><span class="comment">*/</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span><span class="comment">//用数组实现邻接表存储，pnt[i,0]表示与i相邻的结点个数，pnt[i,1...k]存储与i相邻的点</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="datatypes">int</span><span>&nbsp;&nbsp;pnt[MAXN][MAXN];&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">int</span><span>&nbsp;&nbsp;map[MAXN][MAXN];&nbsp;</span><span class="comment">//map[i,j]为初始输入的i到j的距离，并且map[i,i]=0;未知的map[i,j]=INF;</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="datatypes">int</span><span>&nbsp;&nbsp;dis[MAXN];&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">char</span><span>&nbsp;vst[MAXN];&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span><span class="datatypes">int</span><span>&nbsp;SPFA(</span><span class="datatypes">int</span><span>&nbsp;n,&nbsp;</span><span class="datatypes">int</span><span>&nbsp;s)&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">int</span><span>&nbsp;i,&nbsp;pri,&nbsp;end,&nbsp;p,&nbsp;t;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;memset(vst,&nbsp;0,&nbsp;<span class="keyword">sizeof</span><span>(vst));&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span><span>&nbsp;(i=1;&nbsp;i&lt;=n;&nbsp;i++)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dis[i]&nbsp;=&nbsp;INF;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;dis[s]&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;vst[s]&nbsp;=&nbsp;1;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;Q[0]&nbsp;=&nbsp;s;&nbsp;pri&nbsp;=&nbsp;0;&nbsp;end&nbsp;=&nbsp;1;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">while</span><span>&nbsp;(pri&nbsp;&lt;&nbsp;end)&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;=&nbsp;Q[pri];&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span><span>&nbsp;(i=1;&nbsp;i&lt;=pnt[p][0];&nbsp;i++)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;t&nbsp;=&nbsp;pnt[p][i];&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">//先释放，释放成功后再判断是否要加入队列</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(dis[p]+map[p][t]&nbsp;&lt;&nbsp;dis[t])&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dis[t]&nbsp;=&nbsp;dis[p]+map[p][t];&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(!vst[t])&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Q[end++]&nbsp;=&nbsp;t;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vst[t]&nbsp;=&nbsp;1;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vst[p]&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pri++;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;1;&nbsp;&nbsp;</span></span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li></ol></div><pre class="cpp:nogutter:nocontrols" style="display: none;" name="code">/*
+SPFA(Shortest Path Faster Algorithm) [图的存储方式为邻接表]
+是Bellman-Ford算法的一种队列实现，减少了不必要的冗余计算。
+算法大致流程是用一个队列来进行维护。 初始时将源加入队列。 每次从队列中取出一个元素，
+并对所有与他相邻的点进行松弛，若某个相邻的点松弛成功，则将其入队。 直到队列为空时算法结束。
+它可以在O(kE)的时间复杂度内求出源点到其他所有点的最短路径，可以处理负边。
+
+SPFA 在形式上和BFS非常类似，不同的是BFS中一个点出了队列就不可能重新进入队列，但是SPFA中
+一个点可能在出队列之后再次被放入队列，也就是一个点改进过其它的点之后，过了一段时间可能本
+身被改进，于是再次用来改进其它的点，这样反复迭代下去。
+
+判断有无负环：如果某个点进入队列的次数超过V次则存在负环（SPFA无法处理带负环的图）。
+
+SPFA算法有两个优化算法 SLF 和 LLL：
+SLF：Small Label First 策略，设要加入的节点是j，队首元素为i，若dist(j)&lt;dist(i)，则将j插入队首，
+否则插入队尾。
+LLL：Large Label Last 策略，设队首元素为i，队列中所有dist值的平均值为x，若dist(i)&gt;x则将i插入
+到队尾，查找下一元素，直到找到某一i使得dist(i)&lt;=x，则将i出对进行松弛操作。
+引用网上资料，SLF 可使速度提高 15 ~ 20%；SLF + LLL 可提高约 50%。
+在实际的应用中SPFA的算法时间效率不是很稳定，为了避免最坏情况的出现，通常使用效率更加稳定的Dijkstra算法。
+*/
+
+//用数组实现邻接表存储，pnt[i,0]表示与i相邻的结点个数，pnt[i,1...k]存储与i相邻的点
+int  pnt[MAXN][MAXN];
+int  map[MAXN][MAXN]; //map[i,j]为初始输入的i到j的距离，并且map[i,i]=0;未知的map[i,j]=INF;
+int  dis[MAXN];
+char vst[MAXN];
+
+int SPFA(int n, int s)
+{
+    int i, pri, end, p, t;
+    memset(vst, 0, sizeof(vst));
+    for (i=1; i&lt;=n; i++)
+        dis[i] = INF;
+    dis[s] = 0;
+    vst[s] = 1;
+    Q[0] = s; pri = 0; end = 1;
+    while (pri &lt; end)
+    {
+        p = Q[pri];
+        for (i=1; i&lt;=pnt[p][0]; i++)
+        {
+            t = pnt[p][i];
+            //先释放，释放成功后再判断是否要加入队列
+            if (dis[p]+map[p][t] &lt; dis[t])
+            {
+                dis[t] = dis[p]+map[p][t];
+                if (!vst[t])
+                {
+                    Q[end++] = t;
+                    vst[t] = 1;
+                }
+            }
+        }
+        vst[p] = 0;
+        pri++;
+    }
+    return 1;
+}</pre>
+<div class="dp-highlighter nogutter bg_cpp:nogutter:nocontrols">
+<div class="bar"></div>
+<ol class="dp-cpp">
+<li class="alt"><span><span>正规邻接表存储：&nbsp; </span></span></li><li><span><span class="comment">/* ------- 邻接表存储 ----------- */</span><span>&nbsp; </span>
+</span></li><li class="alt"><span><span class="keyword">struct</span><span> Edge&nbsp; </span></span></li><li><span>{&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="datatypes">int</span><span> e;&nbsp; </span><span class="comment">//终点</span><span>&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="datatypes">int</span><span> v;&nbsp; </span><span class="comment">//边权</span><span>&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="keyword">struct</span><span> Edge *nxt;&nbsp; </span>
+</span></li><li><span>};&nbsp; </span></li><li class="alt"><span><span class="keyword">struct</span><span>&nbsp; </span></span></li><li><span>{&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="keyword">struct</span><span> Edge *head, *last;&nbsp;</span></span></li><li><span>} node[MAXN];&nbsp; </span></li><li class="alt"><span><span class="comment">/* -------------------------------- */</span><span>&nbsp;</span></span></li><li><span>&nbsp; </span></li><li class="alt"><span><span class="comment">/*&nbsp; 添加有向边&lt;起点,终点,边权&gt;&nbsp; */</span><span>&nbsp;</span></span></li><li><span><span class="keyword">void</span><span> add(</span><span class="datatypes">int</span><span> s,</span><span class="datatypes">int</span><span> e,</span><span class="datatypes">int</span><span> v)&nbsp;</span></span></li><li class="alt"><span>{&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">struct</span><span> Edge *p;&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; p = (<span class="keyword">struct</span><span> Edge*)malloc(</span><span class="keyword">sizeof</span><span>(</span><span class="keyword">struct</span><span> Edge));&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp; p-&gt;e = e;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; p-&gt;v = v;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; p-&gt;nxt = NULL;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="keyword">if</span><span> (node[s].head == NULL)&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; node[s].head = p;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; node[s].last = p;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">else</span><span>&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; node[s].last-&gt;nxt = p;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; node[s].last = p;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li class="alt"><span>}&nbsp; </span></li><li><span>&nbsp; </span></li><li class="alt"><span><span class="comment">/*&nbsp; 松弛，成功返回1，否则0&nbsp; */</span><span>&nbsp; </span>
+</span></li><li><span><span class="datatypes">int</span><span> relax(</span><span class="datatypes">int</span><span> s,</span><span class="datatypes">int</span><span> e,</span><span class="datatypes">int</span><span> v)&nbsp;</span></span></li><li class="alt"><span>{&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">if</span><span> (dis[s]+v &lt; dis[e])&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dis[e] = dis[s]+v;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">return</span><span> 1;&nbsp; </span>
+</span></li><li><span>&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="keyword">return</span><span> 0;&nbsp; </span></span></li><li><span>}&nbsp; </span></li><li class="alt"><span>&nbsp; </span></li><li><span><span class="comment">/*&nbsp; SPFA有负权回路返回0,否则返回1并且最短路径保存在dis[]&nbsp; */</span><span>&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">int</span><span> n;&nbsp; </span></span></li><li><span><span class="datatypes">int</span><span> vst[MAXN], cnt[MAXN];&nbsp; </span>
+</span></li><li class="alt"><span><span class="datatypes">int</span><span> Q[MAXN*MAXN];&nbsp; </span>
+</span></li><li><span><span class="datatypes">int</span><span> SPFA(</span><span class="datatypes">int</span><span> s0)&nbsp;</span></span></li><li class="alt"><span>{&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="datatypes">int</span><span> i, p, q;&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="keyword">struct</span><span> Edge *pp;&nbsp; </span>
+</span></li><li><span>&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; memset(vst, 0, <span class="keyword">sizeof</span><span>(vst));&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp; memset(cnt, 0, <span class="keyword">sizeof</span><span>(cnt));&nbsp; </span>
+</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="keyword">for</span><span> (i=0; i&lt;=n; i++)&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dis[i] = INF;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; dis[s0] = 0;&nbsp; </span></li><li><span>&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; Q[0] = s0; p = 0; q = 1;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; vst[s0] = 1;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; cnt[s0]++;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">while</span><span> (p &lt; q)&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pp = node[Q[p]].head;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">while</span><span> (pp)&nbsp; </span>
+</span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">if</span><span> (relax(Q[p], pp-&gt;e, pp-&gt;v) &amp;&amp; !vst[pp-&gt;e])&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Q[q++] = pp-&gt;e;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vst[pp-&gt;e] = 1;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cnt[pp-&gt;e]++;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">if</span><span> (cnt[pp-&gt;e] &gt; n) </span>
+<span class="comment">//有负权回路</span><span>&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">return</span><span> 0;&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pp = pp-&gt;nxt;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vst[Q[p]] = 0;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p++;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">return</span><span> 1;&nbsp; </span></span></li><li class="alt"><span>}&nbsp; </span></li></ol>
+</div>
+<div class="dp-highlighter nogutter bg_cpp:nogutter:nocontrols"><div class="bar"></div><ol class="dp-cpp" start="1"><li class="alt"><span><span>正规邻接表存储：&nbsp;&nbsp;</span></span></li><li class=""><span><span class="comment">/*&nbsp;-------&nbsp;邻接表存储&nbsp;-----------&nbsp;*/</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="keyword">struct</span><span>&nbsp;Edge&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">int</span><span>&nbsp;e;&nbsp;&nbsp;</span><span class="comment">//终点</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">int</span><span>&nbsp;v;&nbsp;&nbsp;</span><span class="comment">//边权</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">struct</span><span>&nbsp;Edge&nbsp;*nxt;&nbsp;&nbsp;</span></span></li><li class=""><span>};&nbsp;&nbsp;</span></li><li class="alt"><span><span class="keyword">struct</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">struct</span><span>&nbsp;Edge&nbsp;*head,&nbsp;*last;&nbsp;&nbsp;</span></span></li><li class=""><span>}&nbsp;node[MAXN];&nbsp;&nbsp;</span></li><li class="alt"><span><span class="comment">/*&nbsp;--------------------------------&nbsp;*/</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span><span class="comment">/*&nbsp;&nbsp;添加有向边&lt;起点,终点,边权&gt;&nbsp;&nbsp;*/</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="keyword">void</span><span>&nbsp;add(</span><span class="datatypes">int</span><span>&nbsp;s,&nbsp;</span><span class="datatypes">int</span><span>&nbsp;e,&nbsp;</span><span class="datatypes">int</span><span>&nbsp;v)&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">struct</span><span>&nbsp;Edge&nbsp;*p;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;p&nbsp;=&nbsp;(<span class="keyword">struct</span><span>&nbsp;Edge*)malloc(</span><span class="keyword">sizeof</span><span>(</span><span class="keyword">struct</span><span>&nbsp;Edge));&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;p-&gt;e&nbsp;=&nbsp;e;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;p-&gt;v&nbsp;=&nbsp;v;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;p-&gt;nxt&nbsp;=&nbsp;NULL;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(node[s].head&nbsp;==&nbsp;NULL)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node[s].head&nbsp;=&nbsp;p;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node[s].last&nbsp;=&nbsp;p;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node[s].last-&gt;nxt&nbsp;=&nbsp;p;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node[s].last&nbsp;=&nbsp;p;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span><span class="comment">/*&nbsp;&nbsp;松弛，成功返回1，否则0&nbsp;&nbsp;*/</span><span>&nbsp;&nbsp;</span></span></li><li class=""><span><span class="datatypes">int</span><span>&nbsp;relax(</span><span class="datatypes">int</span><span>&nbsp;s,&nbsp;</span><span class="datatypes">int</span><span>&nbsp;e,&nbsp;</span><span class="datatypes">int</span><span>&nbsp;v)&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(dis[s]+v&nbsp;&lt;&nbsp;dis[e])&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dis[e]&nbsp;=&nbsp;dis[s]+v;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;1;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;0;&nbsp;&nbsp;</span></span></li><li class=""><span>}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;</span></li><li class=""><span><span class="comment">/*&nbsp;&nbsp;SPFA有负权回路返回0,否则返回1并且最短路径保存在dis[]&nbsp;&nbsp;*/</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">int</span><span>&nbsp;n;&nbsp;&nbsp;</span></span></li><li class=""><span><span class="datatypes">int</span><span>&nbsp;vst[MAXN],&nbsp;cnt[MAXN];&nbsp;&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">int</span><span>&nbsp;Q[MAXN*MAXN];&nbsp;&nbsp;</span></span></li><li class=""><span><span class="datatypes">int</span><span>&nbsp;SPFA(</span><span class="datatypes">int</span><span>&nbsp;s0)&nbsp;&nbsp;</span></span></li><li class="alt"><span>{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="datatypes">int</span><span>&nbsp;i,&nbsp;p,&nbsp;q;&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">struct</span><span>&nbsp;Edge&nbsp;*pp;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;memset(vst,&nbsp;0,&nbsp;<span class="keyword">sizeof</span><span>(vst));&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;memset(cnt,&nbsp;0,&nbsp;<span class="keyword">sizeof</span><span>(cnt));&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span><span>&nbsp;(i=0;&nbsp;i&lt;=n;&nbsp;i++)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dis[i]&nbsp;=&nbsp;INF;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;dis[s0]&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;Q[0]&nbsp;=&nbsp;s0;&nbsp;p&nbsp;=&nbsp;0;&nbsp;q&nbsp;=&nbsp;1;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;vst[s0]&nbsp;=&nbsp;1;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;cnt[s0]++;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">while</span><span>&nbsp;(p&nbsp;&lt;&nbsp;q)&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pp&nbsp;=&nbsp;node[Q[p]].head;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">while</span><span>&nbsp;(pp)&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(relax(Q[p],&nbsp;pp-&gt;e,&nbsp;pp-&gt;v)&nbsp;&amp;&amp;&nbsp;!vst[pp-&gt;e])&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Q[q++]&nbsp;=&nbsp;pp-&gt;e;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vst[pp-&gt;e]&nbsp;=&nbsp;1;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cnt[pp-&gt;e]++;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span><span>&nbsp;(cnt[pp-&gt;e]&nbsp;&gt;&nbsp;n)&nbsp;</span><span class="comment">//有负权回路</span><span>&nbsp;&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;0;&nbsp;&nbsp;</span></span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pp&nbsp;=&nbsp;pp-&gt;nxt;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vst[Q[p]]&nbsp;=&nbsp;0;&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p++;&nbsp;&nbsp;</span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;}&nbsp;&nbsp;</span></li><li class=""><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span><span>&nbsp;1;&nbsp;&nbsp;</span></span></li><li class="alt"><span>}&nbsp;&nbsp;</span></li></ol></div><pre class="cpp:nogutter:nocontrols" style="display: none;" name="code">正规邻接表存储：
+/* ------- 邻接表存储 ----------- */
+struct Edge
+{
+    int e;  //终点
+    int v;  //边权
+    struct Edge *nxt;
+};
+struct
+{
+    struct Edge *head, *last;
+} node[MAXN];
+/* -------------------------------- */
+
+/*  添加有向边&lt;起点,终点,边权&gt;  */
+void add(int s, int e, int v)
+{
+    struct Edge *p;
+    p = (struct Edge*)malloc(sizeof(struct Edge));
+    p-&gt;e = e;
+    p-&gt;v = v;
+    p-&gt;nxt = NULL;
+    if (node[s].head == NULL)
+    {
+        node[s].head = p;
+        node[s].last = p;
+    }
+    else
+    {
+        node[s].last-&gt;nxt = p;
+        node[s].last = p;
+    }
+}
+
+/*  松弛，成功返回1，否则0  */
+int relax(int s, int e, int v)
+{
+    if (dis[s]+v &lt; dis[e])
+    {
+        dis[e] = dis[s]+v;
+        return 1;
+    }
+    return 0;
+}
+
+/*  SPFA有负权回路返回0,否则返回1并且最短路径保存在dis[]  */
+int n;
+int vst[MAXN], cnt[MAXN];
+int Q[MAXN*MAXN];
+int SPFA(int s0)
+{
+    int i, p, q;
+    struct Edge *pp;
+
+    memset(vst, 0, sizeof(vst));
+    memset(cnt, 0, sizeof(cnt));
+    for (i=0; i&lt;=n; i++)
+        dis[i] = INF;
+    dis[s0] = 0;
+
+    Q[0] = s0; p = 0; q = 1;
+    vst[s0] = 1;
+    cnt[s0]++;
+    while (p &lt; q)
+    {
+        pp = node[Q[p]].head;
+        while (pp)
+        {
+            if (relax(Q[p], pp-&gt;e, pp-&gt;v) &amp;&amp; !vst[pp-&gt;e])
+            {
+                Q[q++] = pp-&gt;e;
+                vst[pp-&gt;e] = 1;
+                cnt[pp-&gt;e]++;
+                if (cnt[pp-&gt;e] &gt; n) //有负权回路
+                    return 0;
+            }
+            pp = pp-&gt;nxt;
+        }
+        vst[Q[p]] = 0;
+        p++;
+    }
+    return 1;
+}</pre>
+<div class="dp-highlighter nogutter bg_cpp:nogutter:nocontrols">
+<div class="bar"></div>
+<ol class="dp-cpp">
+<li class="alt"><span><span class="comment">/**通过poj 3159 证明：还是用数组来实现邻接表比用链表来实现邻接表效率高，&nbsp; **/</span><span>&nbsp;</span></span></li><li><span>&nbsp; </span></li><li class="alt"><span><span class="preprocessor">#define MAX_node 10000</span><span>&nbsp;</span></span></li><li><span><span class="preprocessor">#define MAX_edge 100000</span><span>&nbsp; </span>
+</span></li><li class="alt"><span>&nbsp; </span></li><li><span><span class="keyword">struct</span><span> Edge&nbsp; </span></span></li><li class="alt"><span>{&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="datatypes">int</span><span> e, v;&nbsp; </span></span></li><li class="alt"><span>} edge[MAX_edge];&nbsp; </span></li><li><span>&nbsp; </span></li><li class="alt"><span><span class="datatypes">int</span><span> neg;&nbsp;&nbsp;&nbsp; </span><span class="comment">//number of edge</span><span>&nbsp;</span></span></li><li><span><span class="datatypes">int</span><span> node[MAX_node];&nbsp; </span><span class="comment">//注意node要用memset初始化全部为-1</span><span>&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">int</span><span> next[MAX_edge];&nbsp; </span>
+</span></li><li><span>&nbsp; </span></li><li class="alt"><span><span class="keyword">void</span><span> add(</span><span class="datatypes">int</span><span> s,</span><span class="datatypes">int</span><span> e,</span><span class="datatypes">int</span><span> v)&nbsp;</span></span></li><li><span>{&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; edge[neg].e = e;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; edge[neg].v = v;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; next[neg] = node[s];&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; node[s] = neg++;&nbsp; </span></li><li class="alt"><span>}&nbsp; </span></li><li><span><span class="comment">/*&nbsp; 该题还证明用栈来实现SPFA比用队列来实现效率高，还节约空间 */</span><span>&nbsp;</span></span></li><li class="alt"><span><span class="datatypes">int</span><span> SPFA(</span><span class="datatypes">int</span><span> s0)</span><span class="comment">//栈实现</span><span>&nbsp;</span></span></li><li><span>{&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="datatypes">int</span><span> i, t, p, top;&nbsp;</span></span></li><li><span>&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; memset(vst, 0, <span class="keyword">sizeof</span><span>(vst));&nbsp;</span></span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">for</span><span> (i=1; i&lt;=n; i++)&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; dis[i] = INF;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; dis[s0] = 0;&nbsp; </span></li><li class="alt"><span>&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; Q[0] = s0;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; top = 1;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; vst[s0] = 1;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; <span class="keyword">while</span><span> (top)&nbsp; </span>
+</span></li><li><span>&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t = Q[--top];&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vst[t] = 0;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p = node[t];&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">while</span><span> (p != -1)&nbsp; </span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="keyword">if</span><span> (relax(t, edge[p].e, edge[p].v) &amp;&amp; !vst[edge[p].e])&nbsp;</span></span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Q[top++] = edge[p].e;&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; vst[edge[p].e] = 1;&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; p = next[p];&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li class="alt"><span>&nbsp;&nbsp;&nbsp; }&nbsp; </span></li><li><span>&nbsp;&nbsp;&nbsp; <span class="keyword">return</span><span> 1;&nbsp; </span></span></li><li class="alt"><span>} </span></li></ol>
+</div>
+<p>&nbsp;</p>
+
+</div>
+
+
+
+<!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare" style="float: right;">
+<a href="#" title="分享到QQ空间" class="bds_qzone"></a>
+<a href="#" title="分享到新浪微博" class="bds_tsina"></a>
+<a href="#" title="分享到腾讯微博" class="bds_tqq"></a>
+<a href="#" title="分享到人人网" class="bds_renren"></a>
+<a href="#" title="分享到网易微博" class="bds_t163"></a>
+<span class="bds_more">更多</span>
+<a title="累计分享2次" href="#" class="shareCount">2</a>
+</div>
+<!-- Baidu Button END -->
+
+
+<!--192.168.100.35-->
+<ul class="article_next_prev">
+            <li class="prev_article"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian']);location.href='/muxidreamtohit/article/details/7893245';">上一篇</span><a href="http://blog.csdn.net/muxidreamtohit/article/details/7893245" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_shangyipian'])">gcd  与 lcm</a></li>
+            <li class="next_article"><span onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian']);location.href='/muxidreamtohit/article/details/7896829';">下一篇</span><a href="http://blog.csdn.net/muxidreamtohit/article/details/7896829" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_xiayipian'])">POJ1511  SPFA经典题目</a></li>
+</ul>
+
+<!-- Baidu Button BEGIN -->
+<script src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/bds_s_v2.js" type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=1536434"></script>
+
+<script type="text/javascript">
+    document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+
+</div>
+      <dl class="blog-associat-tag">
+        <dt>主题推荐</dt>
+        <dd>
+                <a href="http://www.csdn.net/tag/%E7%AE%97%E6%B3%95" target="_blank" class="blog-tage-red">算法</a> 
+                <a href="http://www.csdn.net/tag/algorithm" target="_blank" class="blog-tage-red">algorithm</a> 
+                <a href="http://www.csdn.net/tag/namespace" target="_blank" class="blog-tage-red">namespace</a> 
+                <a href="http://www.csdn.net/tag/%E4%BC%98%E5%8C%96" target="_blank" class="blog-tage-red">优化</a> 
+                <a href="http://www.csdn.net/tag/%E9%93%BE%E8%A1%A8" target="_blank" class="blog-tage-red">链表</a> 
+        </dd>
+    </dl> 
+
+
+<dl class="blog-ass-articl tracking-ad" data-mod="popu_36" id="res-relatived"> 
+     <dt><span>猜你在找</span></dt>    
+<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/hellobabygogo3/article/details/7937941" title="poj 3259 Wormholes" strategy="CFRecommendAlgorithm">poj 3259 Wormholes</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/dgq8211/article/details/7534776" title="区间选点问题（贪心）" strategy="CFRecommendAlgorithm">区间选点问题（贪心）</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/LiWen_7/article/details/7298736" title="拓扑排序" strategy="CFRecommendAlgorithm">拓扑排序</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/cgl1079743846/article/details/7765508" title="uva  127 - " accordian"="" patience"="" strategy="CFRecommendAlgorithm">uva  127 - "Accordian" Patience</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/ahero_happy/article/details/6637214" title="hdu3870 S-T平面图最小割转化为最短路" strategy="CFRecommendAlgorithm">hdu3870 S-T平面图最小割转化为最短路</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/u010084308/article/details/37497145" title="POJ 3050 Hopscotch" strategy="CFRecommendAlgorithm">POJ 3050 Hopscotch</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/hcbbt/article/details/8575392" title="无聊地分析下某网站的注册验证码" strategy="CFRecommendAlgorithm">无聊地分析下某网站的注册验证码</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/u013582254/article/details/38051197" title="ACMer" strategy="CFRecommendAlgorithm">ACMer</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/wangjian8006/article/details/7584989" title="poj1837 - Balance" strategy="CFRecommendAlgorithm">poj1837 - Balance</a></dd><dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a target="_blank" href="http://blog.csdn.net/xianghongai/article/details/17737425" title="windows7 java sdk 环境变量配置" strategy="CFRecommendAlgorithm">windows7 java sdk 环境变量配置</a></dd></dl>
+
+<script type="text/javascript">
+    var searchtitletags = 'SPFA 算法详解(  强大图解，不会都难！)' + ',' + '算法,algorithm,namespace,优化,链表';
+    searchService({
+        index: 'blog',
+        query: searchtitletags,
+        from: 10,
+        size: 10,
+        appendTo: '#res-relatived',
+        url: 'recommend',
+        his: 2,
+        client: "blog_cf_enhance",
+        tmpl: '<dd style="background:url(http://static.blog.csdn.net/skin/default/images/blog-dot-red3.gif) no-repeat 0 10px;"><a href="#{ url }" title="#{ title }" strategy="#{ strategy }">#{ title }</a></dd>'
+    });
+
+ </script>   
+
+    <div id="ad_cen">
+   
+          <script type="text/javascript">
+              new Ad(4, 'ad_cen');
+          </script>
+    <iframe src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad.html" style="border-width: 0px; overflow: hidden; width: 918px; height: 90px;" id="ad_frm_0" frameborder="0" scrolling="no"></iframe></div>
+<div class="comment_class">
+    <div id="comment_title" class="panel_head">
+        <span class="see_comment">查看评论</span><a name="comments"></a></div>
+    <div id="comment_list"><br>&nbsp;&nbsp;暂无评论<br><br><div class="clear"></div></div>
+    <div id="comment_bar">
+    </div>
+    <div id="comment_form"><div class="guest_link">您还没有登录,请<a href="javascript:void(0);" onclick="javascript:csdn.showLogin(function (dat) {js_logined(dat.data.userName);});">[登录]</a>或<a href="http://passport.csdn.net/account/register?from=http%3A%2F%2Fblog.csdn.net%2Fmuxidreamtohit%2Farticle%2Fdetails%2F7894298">[注册]</a></div></div>
+
+    <div class="announce">
+        * 以上用户言论只代表其个人观点，不代表CSDN网站的观点或立场<a name="reply"></a><a name="quote"></a></div>
+</div>
+
+<script type="text/javascript">
+    var fileName = '7894298';
+    var commentscount = 0;
+    var islock = false
+</script>
+<script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/comment.js"></script>
+    <div id="ad_bot">
+    <iframe src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad_002.html" style="border-width: 0px; overflow: hidden; width: 918px; height: 0px;" id="ad_frm_1" frameborder="0" scrolling="no"></iframe></div>
+    <script type="text/javascript">
+    new Ad(5, 'ad_bot');
+    </script>
+<div id="report_dialog">
+</div>
+
+<div id="d-top" style="bottom:60px;">
+      
+
+       <a id="quick-reply" class="btn btn-top q-reply" title="快速回复" style="display:none;">
+            <img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/blog-icon-reply.png" alt="快速回复">
+        </a>    
+
+    <a id="d-top-a" class="btn btn-top backtop" style="display: block;" title="返回顶部" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_huidaodingbu'])">         
+         <img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/top.png" alt="TOP">
+    </a>
+</div>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#ad_frm_0").height("90px");
+
+        if($("#comment_content").length>0)
+        {
+            $("#quick-reply").show();
+
+            $("#quick-reply").click(function(){
+                setEditorFocus();
+            });
+        }       
+     
+        var d_top = $('#d-top-a');
+        document.onscroll = function ()
+        {
+            var scrTop = (document.body.scrollTop || document.documentElement.scrollTop);
+            if (scrTop > 500)
+            {
+                d_top.show();
+            } else
+            {
+                d_top.hide();
+            }
+        }
+        $('#d-top-a').click(function ()
+        {
+            scrollTo(0, 0);
+            this.blur();
+            return false;
+        });
+    });
+  
+</script>
+<style type="text/css">
+    .tag_list
+    {
+        background: none repeat scroll 0 0 #FFFFFF;
+        border: 1px solid #D7CBC1;
+        color: #000000;
+        font-size: 12px;
+        line-height: 20px;
+        list-style: none outside none;
+        margin: 10px 2% 0 1%;
+        padding: 1px;
+    }
+    .tag_list h5
+    {
+        background: none repeat scroll 0 0 #E0DBD3;
+        color: #47381C;
+        font-size: 12px;
+        height: 24px;
+        line-height: 24px;
+        padding: 0 5px;
+        margin: 0;
+    }
+    .tag_list h5 a
+    {
+        color: #47381C;
+    }
+    .classify
+    {
+        margin: 10px 0;
+        padding: 4px 12px 8px;
+    }
+    .classify a
+    {
+        margin-right: 20px;
+        white-space: nowrap;
+    }
+</style>
+<div class="tag_list">
+    <h5>
+        <a href="http://www.csdn.net/tag/" target="_blank">核心技术类目</a></h5>
+    <div class="classify">
+<a title="全部主题" href="http://www.csdn.net/tag" target="_blank" onclick="LogClickCount(this,336);">全部主题</a>
+<a title="Hadoop" href="http://g.csdn.net/5272865" target="_blank" onclick="LogClickCount(this,336);">Hadoop</a>
+<a title="AWS" href="http://g.csdn.net/5272866" target="_blank" onclick="LogClickCount(this,336);">AWS</a>
+<a title="移动游戏" href="http://g.csdn.net/5272870" target="_blank" onclick="LogClickCount(this,336);">移动游戏</a>
+<a title="Java" href="http://g.csdn.net/5272871" target="_blank" onclick="LogClickCount(this,336);">Java</a>
+<a title="Android" href="http://g.csdn.net/5272872" target="_blank" onclick="LogClickCount(this,336);">Android</a>
+<a title="iOS" href="http://g.csdn.net/5272873" target="_blank" onclick="LogClickCount(this,336);">iOS</a>
+<a title="Swift" href="http://g.csdn.net/5272868" target="_blank" onclick="LogClickCount(this,336);">Swift</a>
+<a title="智能硬件" href="http://g.csdn.net/5272869" target="_blank" onclick="LogClickCount(this,336);">智能硬件</a>
+<a title="Docker" href="http://g.csdn.net/5272867" target="_blank" onclick="LogClickCount(this,336);">Docker</a>
+<a title="VPN" href="http://www.csdn.net/tag/vpn" target="_blank" onclick="LogClickCount(this,336);">VPN</a>
+<a title="ERP" href="http://www.csdn.net/tag/erp" target="_blank" onclick="LogClickCount(this,336);">ERP</a>
+<a title="IE10" href="http://www.csdn.net/tag/ie10" target="_blank" onclick="LogClickCount(this,336);">IE10</a>
+<a title="Eclipse" href="http://www.csdn.net/tag/eclipse" target="_blank" onclick="LogClickCount(this,336);">Eclipse</a>
+<a title="CRM" href="http://www.csdn.net/tag/crm" target="_blank" onclick="LogClickCount(this,336);">CRM</a>
+<a title="JavaScript" href="http://www.csdn.net/tag/javascript" target="_blank" onclick="LogClickCount(this,336);">JavaScript</a>
+<a title="Ubuntu" href="http://www.csdn.net/tag/ubuntu" target="_blank" onclick="LogClickCount(this,336);">Ubuntu</a>
+<a title="NFC" href="http://www.csdn.net/tag/nfc" target="_blank" onclick="LogClickCount(this,336);">NFC</a>
+<a title="WAP" href="http://www.csdn.net/tag/wap" target="_blank" onclick="LogClickCount(this,336);">WAP</a>
+<a title="jQuery" href="http://www.csdn.net/tag/jquery" target="_blank" onclick="LogClickCount(this,336);">jQuery</a>
+<a title="数据库" href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" target="_blank" onclick="LogClickCount(this,336);">数据库</a>
+<a title="BI" href="http://www.csdn.net/tag/bi" target="_blank" onclick="LogClickCount(this,336);">BI</a>
+<a title="HTML5" href="http://www.csdn.net/tag/html5" target="_blank" onclick="LogClickCount(this,336);">HTML5</a>
+<a title="Spring" href="http://www.csdn.net/tag/spring" target="_blank" onclick="LogClickCount(this,336);">Spring</a>
+<a title="Apache" href="http://www.csdn.net/tag/apache" target="_blank" onclick="LogClickCount(this,336);">Apache</a>
+<a title=".NET" href="http://www.csdn.net/tag/.net" target="_blank" onclick="LogClickCount(this,336);">.NET</a>
+<a title="API" href="http://www.csdn.net/tag/api" target="_blank" onclick="LogClickCount(this,336);">API</a>
+<a title="HTML" href="http://www.csdn.net/tag/html" target="_blank" onclick="LogClickCount(this,336);">HTML</a>
+<a title="SDK" href="http://www.csdn.net/tag/sdk" target="_blank" onclick="LogClickCount(this,336);">SDK</a>
+<a title="IIS" href="http://www.csdn.net/tag/iis" target="_blank" onclick="LogClickCount(this,336);">IIS</a>
+<a title="Fedora" href="http://www.csdn.net/tag/fedora" target="_blank" onclick="LogClickCount(this,336);">Fedora</a>
+<a title="XML" href="http://www.csdn.net/tag/xml" target="_blank" onclick="LogClickCount(this,336);">XML</a>
+<a title="LBS" href="http://www.csdn.net/tag/lbs" target="_blank" onclick="LogClickCount(this,336);">LBS</a>
+<a title="Unity" href="http://www.csdn.net/tag/unity" target="_blank" onclick="LogClickCount(this,336);">Unity</a>
+<a title="Splashtop" href="http://www.csdn.net/tag/splashtop" target="_blank" onclick="LogClickCount(this,336);">Splashtop</a>
+<a title="UML" href="http://www.csdn.net/tag/uml" target="_blank" onclick="LogClickCount(this,336);">UML</a>
+<a title="components" href="http://www.csdn.net/tag/components" target="_blank" onclick="LogClickCount(this,336);">components</a>
+<a title="Windows Mobile" href="http://www.csdn.net/tag/windowsmobile" target="_blank" onclick="LogClickCount(this,336);">Windows Mobile</a>
+<a title="Rails" href="http://www.csdn.net/tag/rails" target="_blank" onclick="LogClickCount(this,336);">Rails</a>
+<a title="QEMU" href="http://www.csdn.net/tag/qemu" target="_blank" onclick="LogClickCount(this,336);">QEMU</a>
+<a title="KDE" href="http://www.csdn.net/tag/kde" target="_blank" onclick="LogClickCount(this,336);">KDE</a>
+<a title="Cassandra" href="http://www.csdn.net/tag/cassandra" target="_blank" onclick="LogClickCount(this,336);">Cassandra</a>
+<a title="CloudStack" href="http://www.csdn.net/tag/cloudstack" target="_blank" onclick="LogClickCount(this,336);">CloudStack</a>
+<a title="FTC" href="http://www.csdn.net/tag/ftc" target="_blank" onclick="LogClickCount(this,336);">FTC</a>
+<a title="coremail" href="http://www.csdn.net/tag/coremail" target="_blank" onclick="LogClickCount(this,336);">coremail</a>
+<a title="OPhone " href="http://www.csdn.net/tag/ophone" target="_blank" onclick="LogClickCount(this,336);">OPhone </a>
+<a title="CouchBase" href="http://www.csdn.net/tag/couchbase" target="_blank" onclick="LogClickCount(this,336);">CouchBase</a>
+<a title="云计算" href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97" target="_blank" onclick="LogClickCount(this,336);">云计算</a>
+<a title="iOS6" href="http://www.csdn.net/tag/iOS6" target="_blank" onclick="LogClickCount(this,336);">iOS6</a>
+<a title="Rackspace " href="http://www.csdn.net/tag/rackspace" target="_blank" onclick="LogClickCount(this,336);">Rackspace </a>
+<a title="Web App" href="http://www.csdn.net/tag/webapp" target="_blank" onclick="LogClickCount(this,336);">Web App</a>
+<a title="SpringSide" href="http://www.csdn.net/tag/springside" target="_blank" onclick="LogClickCount(this,336);">SpringSide</a>
+<a title="Maemo" href="http://www.csdn.net/tag/maemo" target="_blank" onclick="LogClickCount(this,336);">Maemo</a>
+<a title="Compuware" href="http://www.csdn.net/tag/compuware" target="_blank" onclick="LogClickCount(this,336);">Compuware</a>
+<a title="大数据" href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE" target="_blank" onclick="LogClickCount(this,336);">大数据</a>
+<a title="aptech" href="http://www.csdn.net/tag/aptech" target="_blank" onclick="LogClickCount(this,336);">aptech</a>
+<a title="Perl" href="http://www.csdn.net/tag/perl" target="_blank" onclick="LogClickCount(this,336);">Perl</a>
+<a title="Tornado" href="http://www.csdn.net/tag/tornado" target="_blank" onclick="LogClickCount(this,336);">Tornado</a>
+<a title="Ruby" href="http://www.csdn.net/tag/ruby" target="_blank" onclick="LogClickCount(this,336);">Ruby</a>
+<a title="Hibernate" href="http://www.csdn.net/hibernate" target="_blank" onclick="LogClickCount(this,336);">Hibernate</a>
+<a title="ThinkPHP" href="http://www.csdn.net/tag/thinkphp" target="_blank" onclick="LogClickCount(this,336);">ThinkPHP</a>
+<a title="Spark" href="http://www.csdn.net/tag/spark" target="_blank" onclick="LogClickCount(this,336);">Spark</a>
+<a title="HBase" href="http://www.csdn.net/tag/hbase" target="_blank" onclick="LogClickCount(this,336);">HBase</a>
+<a title="Pure" href="http://www.csdn.net/tag/pure" target="_blank" onclick="LogClickCount(this,336);">Pure</a>
+<a title="Solr" href="http://www.csdn.net/tag/solr" target="_blank" onclick="LogClickCount(this,336);">Solr</a>
+<a title="Angular" href="http://www.csdn.net/tag/angular" target="_blank" onclick="LogClickCount(this,336);">Angular</a>
+<a title="Cloud Foundry" href="http://www.csdn.net/tag/cloudfoundry" target="_blank" onclick="LogClickCount(this,336);">Cloud Foundry</a>
+<a title="Redis" href="http://www.csdn.net/tag/redis" target="_blank" onclick="LogClickCount(this,336);">Redis</a>
+<a title="Scala" href="http://www.csdn.net/tag/scala" target="_blank" onclick="LogClickCount(this,336);">Scala</a>
+<a title="Django" href="http://www.csdn.net/tag/django" target="_blank" onclick="LogClickCount(this,336);">Django</a>
+<a title="Bootstrap" href="http://www.csdn.net/tag/bootstrap" target="_blank" onclick="LogClickCount(this,336);">Bootstrap</a>
+    </div>
+</div>
+
+                    <div class="clear">
+                    </div>
+                </div>
+            </div>
+            <div id="side">
+    <div class="side">
+<div id="custom_column_21734611" class="panel">
+<ul class="panel_head"><span>他山之石可以攻玉</span></ul>
+<ul class="panel_body">
+
+成功之前一切都看似不可能的！
+
+</ul>
+</div><div id="panel_Profile" class="panel">
+<ul class="panel_head"><span>个人资料</span></ul>
+<ul class="panel_body profile">
+<div id="blog_userface">
+    <a href="http://my.csdn.net/kg_second" target="_blank">
+    <img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1_kg_second.jpg" title="访问我的空间" style="max-width:90%">
+    </a>
+    <br>
+    <span><a href="http://my.csdn.net/kg_second" class="user_name" target="_blank">muximuxi525</a></span>
+</div>
+<div class="interact">
+<a href="javascript:void(0);" class="attent" id="span_add_follow" title="[加关注]" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_guanzhu'])"></a>
+<a href="javascript:void(0);" class="letter" onclick="loginto(1)" title="[发私信]"></a>
+</div>
+<div id="blog_medal">
+<div id="bms_box"><a href="http://medal.blog.csdn.net/allmedal.aspx" target="_blank"><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/holdon_s2.gif" onmouseover="m_over_m(this,0)" onmouseout="m_out_m()" alt=""></a></div></div>
+<ul id="blog_rank">
+    <li>访问：<span>139852次</span></li>
+    <li>积分：<span>3023分</span></li>
+    <li>排名：<span>第3358名</span></li>
+</ul>
+<ul id="blog_statistics">
+    <li>原创：<span>185篇</span></li>
+    <li>转载：<span>20篇</span></li>
+    <li>译文：<span>0篇</span></li>
+    <li>评论：<span>48条</span></li>
+</ul>
+</ul>
+</div>
+
+
+<div id="custom_column_22218847" class="panel">
+<ul class="panel_head"><span>Focus on 大大</span></ul>
+<ul class="panel_body">
+
+<a href="http://www.matrix67.com/blog/" target="_blank">matrix67</a> <br>
+<a href="http://my.csdn.net/v_july_v" target="_blank">v_july_v</a> <br>
+<a href="http://blog.csdn.net/Luoshengyang/" target="_blank">老罗老师的Android之旅</a> <br>
+<a href="http://blog.csdn.net/wmn_wmn" target="_blank">wmn_wmn</a> <br>
+<a href="http://blog.csdn.net/w00w12l" target="_blank">w00w12l</a> <br>
+<a href="http://blog.csdn.net/acm_cxlove" target="_blank">acm_cxlove</a> <br>
+<a href="http://blog.csdn.net/zxy_snow" target="_blank">zxy_snow</a> <br>
+<a href="http://blog.csdn.net/morewindows/article/category/859207" target="_blank">MoreWindows</a>
+<br>
+<a href="http://blog.csdn.net/sevenster" target="_blank">博哥</a> <br>
+<a href="http://my.csdn.net/kk303" target="_blank">ZZY</a> <br>
+<a href="http://blog.csdn.net/woshi250hua" target="_blank">ZeroClock</a> <br>
+<a href="http://blog.csdn.net/cyberzhg" target="_blank">Zsys</a>
+
+</ul>
+</div><div id="custom_column_22219103" class="panel">
+<ul class="panel_head"><span>my Acm's Friends</span></ul>
+<ul class="panel_body">
+
+<table cellpadding="?&quot;0&quot;" cellspacing="?&quot;0&quot;">
+<tbody>
+<tr>
+<td><a href="http://blog.csdn.net/yangshuolll" target="_blank"><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1_yangshuolll.jpg" style="width:75px; height:75px">
+</a></td>
+<td style=""></td>
+<td style=""><a href="http://blog.csdn.net/yangshuolll" target="_blank"></a>
+<p>YS</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table cellpadding="?&quot;0&quot;" cellspacing="?&quot;0&quot;">
+<tbody>
+<tr>
+<td><a href="http://blog.csdn.net/yumao19921006" target="_blank"><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1_yumao19921006.gif" style="width:75px; height:75px">
+</a></td>
+<td style=""></td>
+<td style=""><a href="http://blog.csdn.net/yumao19921006" target="_blank"></a>
+<p>Yumao</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table cellpadding="?&quot;0&quot;" cellspacing="?&quot;0&quot;">
+<tbody>
+<tr>
+<td><a href="http://blog.csdn.net/aacm1992" target="_blank"><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1_aacm1992.jpg" style="width:75px; height:75px">
+</a></td>
+<td style=""></td>
+<td style=""><a href="http://blog.csdn.net/aacm1992" target="_blank"></a>
+<p>DJM</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+<table cellpadding="?&quot;0&quot;" cellspacing="?&quot;0&quot;">
+<tbody>
+<tr>
+<td><a href="http://blog.csdn.net/q1666088056" target="_blank"><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/1_q1666088056.jpg" style="width:75px; height:75px">
+</a></td>
+<td style=""></td>
+<td style=""><a href="http://blog.csdn.net/aacm1992" target="_blank"></a>
+<p>yxgyxgyxg</p>
+</td>
+</tr>
+</tbody>
+</table>
+<br>
+
+</ul>
+</div><div id="panel_Category" class="panel">
+<ul class="panel_head"><span>文章分类</span></ul>
+<ul class="panel_body">
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1234175" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">各种赛事积累及杂谈</a><span>(9)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1318168" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">UVA</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1254001" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">ZOJ解题报告</a><span>(2)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1254000" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">HDU解题报告</a><span>(33)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1253999" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">POJ解题报告</a><span>(56)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1339052" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">codeforce</a><span>(5)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1233661" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">STL</a><span>(8)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1183208" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">数据结构</a><span>(9)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1184826" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">DP</a><span>(22)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1228658" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">字符串&amp;KMP&amp;AC自动机&amp;trie树</a><span>(22)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1222537" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">图论----二分图匹配</a><span>(4)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1181770" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">图论----最短路径</a><span>(11)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1179704" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">图论----网络流</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1186763" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">并查集</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1184825" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">树状数组、线段树</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1206889" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">搜索----DFS+BFS+A_Star</a><span>(14)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1217883" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">数学----二分查找+二分统计</a><span>(2)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1179701" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">数学----初等数论</a><span>(38)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1218173" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">数学----组合数学</a><span>(2)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1179702" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">数学----博弈</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1218877" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">数学----高精度、大数处理</a><span>(1)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1220805" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">计算几何</a><span>(6)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1217749" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">凸包</a><span>(3)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1232614" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">矩阵乘法与递推+找规律</a><span>(5)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1227601" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">水+暴力+模拟+碎碎念</a><span>(23)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1242572" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">软卓笔记+IT动向</a><span>(16)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/1244135" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">JAVA</a><span>(2)</span>
+            </li>
+             <li>
+                <a href="http://blog.csdn.net/muxidreamtohit/article/category/2203411" onclick="_gaq.push(['_trackEvent','function', 'onclick', 'blog_articles_wenzhangfenlei']); ">Libevent</a><span>(2)</span>
+            </li>
+</ul>
+</div><div id="panel_Archive" class="panel">
+<ul class="panel_head"><span>文章存档</span></ul>
+<ul class="panel_body">
+<div id="archive_list"><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2014/04">2014年04月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2014/01">2014年01月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2013/10">2013年10月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2013/08">2013年08月</a><span>(1)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2013/05">2013年05月</a><span>(12)</span></li><span class="hidelist" style="display:none;"><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2013/04">2013年04月</a><span>(15)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2013/03">2013年03月</a><span>(8)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2013/02">2013年02月</a><span>(2)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2013/01">2013年01月</a><span>(15)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2012/12">2012年12月</a><span>(6)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2012/11">2012年11月</a><span>(4)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2012/10">2012年10月</a><span>(41)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2012/09">2012年09月</a><span>(54)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2012/08">2012年08月</a><span>(33)</span></li><li><a href="http://blog.csdn.net/muxidreamtohit/article/month/2012/07">2012年07月</a><span>(9)</span></li></span><div id="archive_list_button" class="list_closed">展开</div></div>
+</ul>
+</div>
+<div id="hotarticls" class="panel">
+<ul class="panel_head">
+    <span>       
+阅读排行    </span>
+</ul>
+
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/7985007" title="暑期9_15队内练习赛  B题  大数取模+矩阵快速幂">暑期9_15队内练习赛  B题  大数取模+矩阵快速幂</a><span>(17473)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8001564" title="9-20队内练习赛 G题 Convex Hull of Lattice Points （来自HDU 3285原题）">9-20队内练习赛 G题 Convex Hull of Lattice Points （来自HDU 3285原题）</a><span>(17342)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/7978435" title="暑期ACM队内练习赛  H题  数字游戏">暑期ACM队内练习赛  H题  数字游戏</a><span>(17087)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/7853955" title="POJ 2513 trie+并查集+欧拉路">POJ 2513 trie+并查集+欧拉路</a><span>(4067)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8028597" title="JAVA 笔记">JAVA 笔记</a><span>(3519)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8493671" title="新闻发布系统  (Asp.net  三层架构 )">新闻发布系统  (Asp.net  三层架构 )</a><span>(2674)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8112601" title="2013年各大小IT公司待遇，绝对真实，一线数据！（初版）">2013年各大小IT公司待遇，绝对真实，一线数据！（初版）</a><span>(2303)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/7941258" title="强大的KMP解释，不懂都难(有图有真相)">强大的KMP解释，不懂都难(有图有真相)</a><span>(1815)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/7725525" title="博弈的三个巨人  巴什博奕  威佐夫博奕  尼姆博奕">博弈的三个巨人  巴什博奕  威佐夫博奕  尼姆博奕</a><span>(1767)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/7913747" title="POJ 图论 基本概括">POJ 图论 基本概括</a><span>(1351)</span>
+</li>
+</ul>
+</div>
+<div id="hotarticls2" class="panel">
+<ul class="panel_head"><span>评论排行</span></ul>
+<ul class="panel_body itemlist">
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8979004" title="2013ACM/ICPC长沙赛区区域赛邀请赛小结">2013ACM/ICPC长沙赛区区域赛邀请赛小结</a><span>(10)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8069579" title="我的第一次省赛">我的第一次省赛</a><span>(8)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8493671" title="新闻发布系统  (Asp.net  三层架构 )">新闻发布系统  (Asp.net  三层架构 )</a><span>(8)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/7961471" title="The 37th ACM/ICPC Asia Regional Tianjin Site Online Contest - A.B.J">The 37th ACM/ICPC Asia Regional Tianjin Site Online Contest - A.B.J</a><span>(3)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8465785" title="HDU 1171 Big Event in HDU">HDU 1171 Big Event in HDU</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8736971" title="POJ1166 the clocks">POJ1166 the clocks</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8783133" title="HDU 1011 Starship Troopers">HDU 1011 Starship Troopers</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8918112" title="2013ACM/ICPC湘潭邀请赛">2013ACM/ICPC湘潭邀请赛</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/8292308" title="小菜Asp.net第一个班级小组小项目 第一阶段需求的 新闻发布系统 小结">小菜Asp.net第一个班级小组小项目 第一阶段需求的 新闻发布系统 小结</a><span>(2)</span>
+</li>
+<li>
+<a href="http://blog.csdn.net/muxidreamtohit/article/details/7884187" title="POJ2002">POJ2002</a><span>(2)</span>
+</li>
+</ul>
+</div>
+<div id="homepageArticles" class="panel tracking-ad" data-mod="popu_4">
+<ul class="panel_head"><span>推荐文章</span></ul>
+<ul class="panel_body" id="ad_commend"><iframe src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad_003.html" style="border-width: 0px; overflow: hidden; width: 194px; height: 0px;" id="ad_frm_2" frameborder="0" scrolling="no"></iframe></ul>
+</div>
+<script type="text/javascript">
+ new Ad(12, 'ad_commend');
+</script><div id="newcomments" class="panel">
+<ul class="panel_head"><span>最新评论</span></ul>
+<ul class="panel_body itemlist">
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/8493671#comments">新闻发布系统  (Asp.net  三层架构 )</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/u013054944" class="user_name">RoyceCrow</a>:
+你好，本人最近在弄新闻发布系统时遇到了些问题，请你可以的话把整个程序发给我，只做学习，不做任何商业操...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/17966149#comments">考研这一阶段</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/qzzsunly" class="user_name">下浪淘沙</a>:
+加油。还年轻，一切都还来得及。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/17966149#comments">考研这一阶段</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/appte" class="user_name">东凌爱</a>:
+学长加油。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/17966149#comments">新闻发布系统  (Asp.net  三层架构 )</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/u012640451" class="user_name">雨不停下</a>:
+你好，我是在校学生，最近刚学到三重构架，不过不是很懂，能不能把你的新闻发布系统 (Asp.net 三...
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/17966149#comments">新闻发布系统  (Asp.net  三层架构 )</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/wangdongdream" class="user_name">wangdongdream</a>:
+求资源，，，好人一生平安。。。wangdongdream@qq.com
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/8979004#comments">2013ACM/ICPC长沙赛区区域赛邀请赛小结</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/meng_zy" class="user_name">孟小子</a>:
+很喜欢博主的文章，刚刚用豆约翰博客备份专家备份了您的全部博文。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/8057319#comments">ZOJ1195 Blowing Fuses</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/meng_zy" class="user_name">孟小子</a>:
+很喜欢博主的文章，刚刚用豆约翰博客备份专家备份了您的全部博文。
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/8057319#comments">2013ACM/ICPC长沙赛区区域赛邀请赛小结</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/kg_second" class="user_name">muximuxi525</a>:
+@Wiking__acm:一起加油~~干巴嗲
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/8057319#comments">2013ACM/ICPC长沙赛区区域赛邀请赛小结</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/Wiking__acm" class="user_name">Wiking__acm</a>:
+我们队也是靠封榜后十几分钟过掉A题，侥幸拿到铜牌，呵呵
+    </p>
+    </li>
+    <li>
+   
+         <a href="http://blog.csdn.net/muxidreamtohit/article/details/8057319#comments">2013ACM/ICPC长沙赛区区域赛邀请赛小结</a>
+    <p style="margin:0px;"><a href="http://blog.csdn.net/kg_second" class="user_name">muximuxi525</a>:
+@Ice_Crazy:呵呵，大牛谦虚了。
+    </p>
+    </li>
+</ul>
+</div>
+    </div>
+    <div class="clear">
+    </div>
+</div>
+
+            <div class="clear">
+            </div>
+        </div>
+        
+
+<script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/cnick.js"></script>
+<script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/newblog.js"></script>
+
+
+<script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/showblogmedal.js"></script>
+<script type="text/javascript">
+    document.write('<script type="text/javascript" src="http://csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date() / 120000).toString(36) + '="></' + 'script>');
+</script><script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/publib_footer.js"></script><link rel="stylesheet" type="text/css" href="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/pub_footer_2012.css"><div id="pub_footerall" class="pub_footerall"><dl><dt></dt> <dd><a href="http://www.csdn.net/company/about.html" target="_blank">公司简介</a>|<a href="http://www.csdn.net/company/recruit.html" target="_blank">招贤纳士</a>|<a href="http://www.csdn.net/company/marketing.html" target="_blank">广告服务</a>|<a href="http://www.csdn.net/company/account.html" target="_blank">银行汇款帐号</a>|<a href="http://www.csdn.net/company/contact.html" target="_blank">联系方式</a>|<a href="http://www.csdn.net/company/statement.html" target="_blank">版权声明</a>|<a href="http://www.csdn.net/company/layer.html" target="_blank">法律顾问</a>|<a href="mailto:webmaster@csdn.net">问题报告</a>|<a target="_blank" href="http://www.csdn.net/friendlink.html">合作伙伴</a>|<a href="http://bbs.csdn.net/forums/Service" target="_blank">论坛反馈</a></dd><dd><a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2355263776&amp;site=qq&amp;menu=yes" target="_blank" class="qq">网站客服</a> <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2251809102&amp;site=qq&amp;menu=yes" target="_blank" class="qq">杂志客服</a> <a href="http://e.weibo.com/csdnsupport/profile" target="_blank" class="weibo">微博客服</a> <a href="mailto:webmaster@csdn.net" class="email" title="联系邮箱">webmaster@csdn.net</a> <span class="phone" title="服务热线">400-600-2320</span></dd><dd>京&nbsp;ICP&nbsp;证&nbsp;070598&nbsp;号</dd><dd>北京创新乐知信息技术有限公司 版权所有</dd><dd>江苏乐知网络技术有限公司 提供商务支持</dd><dd>Copyright © 1999-2014, CSDN.NET, All Rights Reserved&nbsp;<a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202001032100010" target="_blank"><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/gongshang_logos.gif" alt="GongshangLogo" title=""></a></dd></dl></div><div id="note1" class="csdn_note" style="display:none; position:absolute; z-index:9999; width:440px">  <span class="notice_top_arrow"><span class="inner"></span></span>  <div class="box"></div></div><div class="csdn_notice_tip" style="display:none; position:absolute; z-index:9990; width:170px">  <iframe src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/a_002.html" style="z-index:-1;position:absolute;top:0;left:0;width:100%;height:100%;background:transparent" frameborder="0" scrolling="no"></iframe>  <div class="tip_text">您有<strong>0</strong>条新通知</div>  <a href="javascript:void%200" class="close2"></a></div><script id="noticeScript" type="text/javascript" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/notify.js"></script>
+    <script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/login.js"></script>
+<script type="text/javascript">document.write("<img src=http://counter.csdn.net/pv.aspx?id=24 border=0 width=0 height=0>");</script><img src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/pv.asc" border="0" height="0" width="0">
+<script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/counter.js"></script><script type="text/javascript" charset="UTF-8" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/msg.js"></script>
+<script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/ad-blog.js"></script>
+<script type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/count.js"></script><iframe src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/logs.html" frameborder="0" height="0" width="0"></iframe>
+<script type="text/javascript">
+    $(function () {
+        function __get_code_toolbar(snippet_id) {
+            return $("<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "' target='_blank' title='在CODE上查看代码片' style='text-indent:0;'><img src='https://code.csdn.net/assets/CODE_ico.png' width=12 height=12 alt='在CODE上查看代码片' style='position:relative;top:1px;left:2px;'/></a>"
+                    + "<a href='https://code.csdn.net/snippets/"
+                    + snippet_id
+                    + "/fork' target='_blank' title='派生到我的代码片'  style='text-indent:0;'><img src='https://code.csdn.net/assets/ico_fork.svg' width=12 height=12 alt='派生到我的代码片' style='position:relative;top:2px;left:2px;'/></a>");
+        }
+        
+        $("[code_snippet_id]").each(function () {
+            __s_id = $(this).attr("code_snippet_id");
+            if (__s_id != null && __s_id != "" && __s_id != 0 && parseInt(__s_id) > 70020) {
+                __code_tool = __get_code_toolbar(__s_id);
+                $(this).prev().find(".tools").append(__code_tool);
+            }
+        });
+    });
+</script>
+
+    </div>
+      <!--new top-->
+    
+    <script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="SPFA%20%E7%AE%97%E6%B3%95%E8%AF%A6%E8%A7%A3%28%20%E5%BC%BA%E5%A4%A7%E5%9B%BE%E8%A7%A3%EF%BC%8C%E4%B8%8D%E4%BC%9A%E9%83%BD%E9%9A%BE%EF%BC%81%29%20-%20muximuxi@Achilles%E7%9A%84%E4%B8%93%E6%A0%8F%20-%20%E5%8D%9A%E5%AE%A2%E9%A2%91%E9%81%93%20-%20CSDN.NET_files/toolbar.js"></script>
+     <!--new top-->
+
+
+<div style="display: block;" id="tag-suggest-pop">
+  <div class="relative">
+    <div class="close"></div>
+    <div class="content">
+      <span>更多相关资源：</span>
+      <a href="http://www.csdn.net/tag/dijkstra" target="_blank">dijkstra</a><a href="http://www.csdn.net/tag/%E4%BC%98%E5%8C%96" target="_blank">优化</a><a href="http://www.csdn.net/tag/%E5%86%85%E5%AD%98" target="_blank">内存</a>
+    </div>
+  </div>
+</div></body></html>

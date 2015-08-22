@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1408587172 source:/home/tjuacm/Documents/图论/网络流/最小割/HDU3251 Being a hero最小割求割边/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<queue>
+	<algorithm>
+

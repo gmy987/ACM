@@ -1,0 +1,11 @@
+# depslib dependency file v1.0
+1405682042 source:/home/tjuacm/Documents/POJ2676  数独DFS/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+
+1405682579 source:/home/tjuacm/Documents/搜索/DFS/POJ2676  数独DFS/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+

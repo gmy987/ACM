@@ -1,0 +1,967 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- saved from url=(0058)http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html -->
+<html><head id="Head"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>
+	卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客
+</title><meta id="metaKeywords" name="keywords" content="卡特兰数 Catalan数 ( ACM 数论 组合 )"><link type="text/css" rel="stylesheet" href="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/common.css"><link id="MainCss" type="text/css" rel="stylesheet" href="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/style.css"><link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cppblog.com/MiYu/rss.aspx"></head>
+<body>
+    <form name="Form1" method="post" action="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客.html" onsubmit="javascript:return WebForm_OnSubmit();" id="Form1">
+<div>
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="
+__VIEWSTATE" value="">
+</div>
+
+<script type="text/javascript" async="" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/ga.js"></script><script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['Form1'];
+if (!theForm) {
+    theForm = document.Form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/WebResource.axd" type="text/javascript"></script>
+
+<script language="JavaScript">
+									function ctlent(evt,id)
+											{
+												if(evt.ctrlKey && evt.keyCode == 13)
+												{	
+													try
+													{
+														TempSave(id);
+													}
+													catch(ex)
+													{
+													}
+													finally
+													{
+													    __doPostBack('AjaxHolder$PostComment$btnSubmit','')
+													}
+												}
+		
+												}</script>
+												<script language="JavaScript">function SetReplyAuhor(author){document.getElementById('AjaxHolder_PostComment_tbComment').value+="@"+author+"\n";document.getElementById('AjaxHolder_PostComment_tbComment').focus();return false}</script>
+<script src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/ScriptResource.axd" type="text/javascript"></script>
+<script src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/ScriptResource(1).axd" type="text/javascript"></script>
+<script src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/ScriptResource(2).axd" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+function WebForm_OnSubmit() {
+if (typeof(ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
+return true;
+}
+//]]>
+</script>
+
+        
+
+<table width="100%" class="Framework" cellspacing="0" cellpadding="0">
+	<tbody><tr>
+		<td colspan="2">
+			
+<div id="top">
+<table width="100%" cellpadding="8" cellspacing="0">
+	<tbody><tr>
+		<td nowrap="">
+			<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cppblog.com/MiYu/">ACM___________________________</a></h1>
+			                             ______________白白の屋
+		</td>
+	</tr>
+</tbody></table>
+</div>
+<div id="sub">
+<div class="BlogStats">posts - 182, comments - 101, trackbacks - 0, articles - 0</div></div>
+
+
+</td>
+	</tr>
+	<tr>
+		<td class="LeftCell">
+			<div id="leftmenu" style="display: inline;">
+				
+					
+<h3>导航</h3>
+<ul>
+	<li>
+		<a id="MyLinks1_HomeLink" href="http://www.cppblog.com/">C++博客</a>
+	</li><li>
+		<a id="MyLinks1_MyHomeLink" href="http://www.cppblog.com/MiYu/">首页</a>
+	</li><li>
+		<a id="MyLinks1_NewPostLink" href="http://www.cppblog.com/MiYu/admin/EditPosts.aspx?opt=1">新随笔</a>
+	</li><li>
+		<a id="MyLinks1_ContactLink" accesskey="9" href="http://www.cppblog.com/MiYu/contact.aspx?id=1">联系</a>
+	</li><li>
+		<a id="MyLinks1_XMLLink" href="http://www.cppblog.com/MiYu/Rss.aspx"><img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml.gif" alt="RSS 2.0 Feed" style="border-width:0px;"></a><a id="MyLinks1_Syndication" href="http://www.cppblog.com/MiYu/Rss.aspx">聚合</a>
+	</li><li>
+		<a id="MyLinks1_Admin" href="http://www.cppblog.com/MiYu/admin/EditPosts.aspx">管理</a></li>
+</ul>
+
+					
+<h3>公告</h3>
+	<div id="referer"><a href="http://www.clicki.cn/">统计系统</a></div><script src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/feeler.php"></script>
+<a href="http://www2.clustrmaps.com/counter/maps.php?url=http://www.cppblog.com/miyu" id="clustrMapsLink"><img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/index2.php" style="border:0px;" alt="Locations of visitors to this page" title="Locations of visitors to this page" id="clustrMapsImg" onerror="this.onerror=null; this.src=&#39;http://clustrmaps.com/images/clustrmaps-back-soon.jpg&#39;; document.getElementById(&#39;clustrMapsLink&#39;).href=&#39;http://clustrmaps.com&#39;;">
+</a>
+
+					<table id="Calendar1_entryCal" class="Cal" cellspacing="0" cellpadding="0" title="日历" border="0" style="border-width:1px;border-style:solid;border-collapse:collapse;">
+	<tbody><tr><td colspan="7" style="background-color:Silver;"><table class="CalTitle" cellspacing="0" border="0" style="width:100%;border-collapse:collapse;">
+		<tbody><tr><td class="CalNextPrev" style="width:15%;"><a href="javascript:__doPostBack('Calendar1$entryCal','V3834')" style="color:Black" title="转到上一个月">&lt;</a></td><td align="center" style="width:70%;">2010年8月</td><td class="CalNextPrev" align="right" style="width:15%;"><a href="javascript:__doPostBack('Calendar1$entryCal','V3896')" style="color:Black" title="转到下一个月">&gt;</a></td></tr>
+	</tbody></table></td></tr><tr><th class="CalDayHeader" align="center" abbr="日" scope="col">日</th><th class="CalDayHeader" align="center" abbr="一" scope="col">一</th><th class="CalDayHeader" align="center" abbr="二" scope="col">二</th><th class="CalDayHeader" align="center" abbr="三" scope="col">三</th><th class="CalDayHeader" align="center" abbr="四" scope="col">四</th><th class="CalDayHeader" align="center" abbr="五" scope="col">五</th><th class="CalDayHeader" align="center" abbr="六" scope="col">六</th></tr><tr><td class="CalOtherMonthDay" align="center" style="width:14%;">25</td><td class="CalOtherMonthDay" align="center" style="width:14%;">26</td><td class="CalOtherMonthDay" align="center" style="width:14%;">27</td><td class="CalOtherMonthDay" align="center" style="width:14%;">28</td><td class="CalOtherMonthDay" align="center" style="width:14%;">29</td><td class="CalOtherMonthDay" align="center" style="width:14%;">30</td><td class="CalOtherMonthDay" align="center" style="width:14%;">31</td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;">1</td><td align="center" style="width:14%;">2</td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/03/MiYu.html"><u>3</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/04.html"><u>4</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/05.html"><u>5</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/06.html"><u>6</u></a></td><td class="CalWeekendDay" align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/07.html"><u>7</u></a></td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/08.html"><u>8</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/09.html"><u>9</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/10.html"><u>10</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/11.html"><u>11</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/12.html"><u>12</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/13.html"><u>13</u></a></td><td class="CalWeekendDay" align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/14.html"><u>14</u></a></td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/15.html"><u>15</u></a></td><td align="center" style="width:14%;">16</td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/17.html"><u>17</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/18.html"><u>18</u></a></td><td align="center" style="width:14%;">19</td><td align="center" style="width:14%;">20</td><td class="CalWeekendDay" align="center" style="width:14%;">21</td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;">22</td><td align="center" style="width:14%;">23</td><td align="center" style="width:14%;">24</td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/25.html"><u>25</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/26.html"><u>26</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/27.html"><u>27</u></a></td><td class="CalWeekendDay" align="center" style="width:14%;">28</td></tr><tr><td class="CalWeekendDay" align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/29.html"><u>29</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/30.html"><u>30</u></a></td><td align="center" style="width:14%;"><a href="http://www.cppblog.com/MiYu/archive/2010/08/31.html"><u>31</u></a></td><td class="CalOtherMonthDay" align="center" style="width:14%;">1</td><td class="CalOtherMonthDay" align="center" style="width:14%;">2</td><td class="CalOtherMonthDay" align="center" style="width:14%;">3</td><td class="CalOtherMonthDay" align="center" style="width:14%;">4</td></tr>
+</tbody></table>
+
+					
+<h3>常用链接</h3>
+<ul>
+		<li><a id="SingleColumn1_ctl00_repeaterLinks_ctl01_lnkLinkItem" href="http://www.cppblog.com/MiYu/MyPosts.html">我的随笔</a></li>
+	
+		<li><a id="SingleColumn1_ctl00_repeaterLinks_ctl02_lnkLinkItem" href="http://www.cppblog.com/MiYu/MyComments.html">我的评论</a></li>
+	
+		<li><a id="SingleColumn1_ctl00_repeaterLinks_ctl03_lnkLinkItem" href="http://www.cppblog.com/MiYu/OtherPosts.html">我参与的随笔</a></li>
+	</ul>
+<h3>留言簿<span style="font-size:11px;font-weight:normal;">(5)</span></h3>
+<ul>
+	<li>
+		<a id="SingleColumn1__371cf31_lnkMessages" href="http://www.cppblog.com/MiYu/Contact.aspx?id=1">给我留言</a>
+	</li><li>
+		<a id="SingleColumn1__371cf31_lnkPublicMsgView" href="http://www.cppblog.com/MiYu/default.aspx?opt=msg">查看公开留言</a>
+	</li><li>
+		<a id="SingleColumn1__371cf31_lnkPrivateMsgView" href="http://www.cppblog.com/MiYu/admin/MyMessages.aspx">查看私人留言</a>
+	</li>
+</ul>
+
+		<h3>随笔分类<span style="font-size:11px;font-weight:normal">(332)</span></h3>
+		
+				<ul>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_Link" href="http://www.cppblog.com/MiYu/category/14417.html">ACM ( DP )(4)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_RssLink" title="Subscribe to ACM ( DP )(4)" href="http://www.cppblog.com/MiYu/category/14417.html/rss"><img title="Subscribe to ACM ( DP )(4)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_Link" href="http://www.cppblog.com/MiYu/category/14522.html">ACM ( MST 最小生成树 )(7)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_RssLink" title="Subscribe to ACM ( MST 最小生成树 )(7)" href="http://www.cppblog.com/MiYu/category/14522.html/rss"><img title="Subscribe to ACM ( MST 最小生成树 )(7)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_Link" href="http://www.cppblog.com/MiYu/category/14418.html">ACM ( 背包(DP) )(3)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_RssLink" title="Subscribe to ACM ( 背包(DP) )(3)" href="http://www.cppblog.com/MiYu/category/14418.html/rss"><img title="Subscribe to ACM ( 背包(DP) )(3)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_Link" href="http://www.cppblog.com/MiYu/category/14518.html">ACM ( 并查集 )(12)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_RssLink" title="Subscribe to ACM ( 并查集 )(12)" href="http://www.cppblog.com/MiYu/category/14518.html/rss"><img title="Subscribe to ACM ( 并查集 )(12)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_Link" href="http://www.cppblog.com/MiYu/category/14474.html">ACM ( 博弈 )(10)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl05_RssLink" title="Subscribe to ACM ( 博弈 )(10)" href="http://www.cppblog.com/MiYu/category/14474.html/rss"><img title="Subscribe to ACM ( 博弈 )(10)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_Link" href="http://www.cppblog.com/MiYu/category/14420.html">ACM ( 串 )(17)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl06_RssLink" title="Subscribe to ACM ( 串 )(17)" href="http://www.cppblog.com/MiYu/category/14420.html/rss"><img title="Subscribe to ACM ( 串 )(17)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl07_Link" href="http://www.cppblog.com/MiYu/category/14460.html">ACM ( 大数 )(3)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl07_RssLink" title="Subscribe to ACM ( 大数 )(3)" href="http://www.cppblog.com/MiYu/category/14460.html/rss"><img title="Subscribe to ACM ( 大数 )(3)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl08_Link" href="http://www.cppblog.com/MiYu/category/14431.html">ACM ( 递推 &amp; 递归 )(2)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl08_RssLink" title="Subscribe to ACM ( 递推 &amp; 递归 )(2)" href="http://www.cppblog.com/MiYu/category/14431.html/rss"><img title="Subscribe to ACM ( 递推 &amp; 递归 )(2)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl09_Link" href="http://www.cppblog.com/MiYu/category/14419.html">ACM ( 枚举 )(7)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl09_RssLink" title="Subscribe to ACM ( 枚举 )(7)" href="http://www.cppblog.com/MiYu/category/14419.html/rss"><img title="Subscribe to ACM ( 枚举 )(7)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl10_Link" href="http://www.cppblog.com/MiYu/category/14416.html">ACM ( 模拟 )(9)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl10_RssLink" title="Subscribe to ACM ( 模拟 )(9)" href="http://www.cppblog.com/MiYu/category/14416.html/rss"><img title="Subscribe to ACM ( 模拟 )(9)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl11_Link" href="http://www.cppblog.com/MiYu/category/14400.html">ACM ( 母函数 )(7)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl11_RssLink" title="Subscribe to ACM ( 母函数 )(7)" href="http://www.cppblog.com/MiYu/category/14400.html/rss"><img title="Subscribe to ACM ( 母函数 )(7)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl12_Link" href="http://www.cppblog.com/MiYu/category/14421.html">ACM ( 排序 )(3)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl12_RssLink" title="Subscribe to ACM ( 排序 )(3)" href="http://www.cppblog.com/MiYu/category/14421.html/rss"><img title="Subscribe to ACM ( 排序 )(3)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl13_Link" href="http://www.cppblog.com/MiYu/category/14428.html">ACM ( 树 )(1)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl13_RssLink" title="Subscribe to ACM ( 树 )(1)" href="http://www.cppblog.com/MiYu/category/14428.html/rss"><img title="Subscribe to ACM ( 树 )(1)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl14_Link" href="http://www.cppblog.com/MiYu/category/14734.html">ACM ( 树状数组 )(12)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl14_RssLink" title="Subscribe to ACM ( 树状数组 )(12)" href="http://www.cppblog.com/MiYu/category/14734.html/rss"><img title="Subscribe to ACM ( 树状数组 )(12)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl15_Link" href="http://www.cppblog.com/MiYu/category/14439.html">ACM ( 数据结构 )(33)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl15_RssLink" title="Subscribe to ACM ( 数据结构 )(33)" href="http://www.cppblog.com/MiYu/category/14439.html/rss"><img title="Subscribe to ACM ( 数据结构 )(33)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl16_Link" href="http://www.cppblog.com/MiYu/category/14425.html">ACM ( 数论 )(19)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl16_RssLink" title="Subscribe to ACM ( 数论 )(19)" href="http://www.cppblog.com/MiYu/category/14425.html/rss"><img title="Subscribe to ACM ( 数论 )(19)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl17_Link" href="http://www.cppblog.com/MiYu/category/14450.html">ACM ( 数学题/几何 )(6)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl17_RssLink" title="Subscribe to ACM ( 数学题/几何 )(6)" href="http://www.cppblog.com/MiYu/category/14450.html/rss"><img title="Subscribe to ACM ( 数学题/几何 )(6)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl18_Link" href="http://www.cppblog.com/MiYu/category/14422.html">ACM ( 水题 )(42)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl18_RssLink" title="Subscribe to ACM ( 水题 )(42)" href="http://www.cppblog.com/MiYu/category/14422.html/rss"><img title="Subscribe to ACM ( 水题 )(42)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl19_Link" href="http://www.cppblog.com/MiYu/category/14426.html">ACM ( 搜索 )(7)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl19_RssLink" title="Subscribe to ACM ( 搜索 )(7)" href="http://www.cppblog.com/MiYu/category/14426.html/rss"><img title="Subscribe to ACM ( 搜索 )(7)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl20_Link" href="http://www.cppblog.com/MiYu/category/14424.html">ACM ( 贪心 )(1)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl20_RssLink" title="Subscribe to ACM ( 贪心 )(1)" href="http://www.cppblog.com/MiYu/category/14424.html/rss"><img title="Subscribe to ACM ( 贪心 )(1)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl21_Link" href="http://www.cppblog.com/MiYu/category/14427.html">ACM ( 图 )(5)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl21_RssLink" title="Subscribe to ACM ( 图 )(5)" href="http://www.cppblog.com/MiYu/category/14427.html/rss"><img title="Subscribe to ACM ( 图 )(5)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl22_Link" href="http://www.cppblog.com/MiYu/category/14861.html">ACM ( 线段树 )(12)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl22_RssLink" title="Subscribe to ACM ( 线段树 )(12)" href="http://www.cppblog.com/MiYu/category/14861.html/rss"><img title="Subscribe to ACM ( 线段树 )(12)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl23_Link" href="http://www.cppblog.com/MiYu/category/14423.html">ACM ( 杂题 )(8)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl23_RssLink" title="Subscribe to ACM ( 杂题 )(8)" href="http://www.cppblog.com/MiYu/category/14423.html/rss"><img title="Subscribe to ACM ( 杂题 )(8)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl24_Link" href="http://www.cppblog.com/MiYu/category/14730.html">ACM ( 字典树( TRIE ) )(6)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl24_RssLink" title="Subscribe to ACM ( 字典树( TRIE ) )(6)" href="http://www.cppblog.com/MiYu/category/14730.html/rss"><img title="Subscribe to ACM ( 字典树( TRIE ) )(6)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl25_Link" href="http://www.cppblog.com/MiYu/category/14445.html">ACM ( 组合 )(15)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl25_RssLink" title="Subscribe to ACM ( 组合 )(15)" href="http://www.cppblog.com/MiYu/category/14445.html/rss"><img title="Subscribe to ACM ( 组合 )(15)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl26_Link" href="http://www.cppblog.com/MiYu/category/14589.html">ACM ( 最短路 )(4)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl26_RssLink" title="Subscribe to ACM ( 最短路 )(4)" href="http://www.cppblog.com/MiYu/category/14589.html/rss"><img title="Subscribe to ACM ( 最短路 )(4)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl27_Link" href="http://www.cppblog.com/MiYu/category/15433.html">ACM (Splay Tree)(2)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl27_RssLink" title="Subscribe to ACM (Splay Tree)(2)" href="http://www.cppblog.com/MiYu/category/15433.html/rss"><img title="Subscribe to ACM (Splay Tree)(2)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl28_Link" href="http://www.cppblog.com/MiYu/category/14429.html">ACM__心情(4)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl28_RssLink" title="Subscribe to ACM__心情(4)" href="http://www.cppblog.com/MiYu/category/14429.html/rss"><img title="Subscribe to ACM__心情(4)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl29_Link" href="http://www.cppblog.com/MiYu/category/14430.html">ACM_资料(46)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl29_RssLink" title="Subscribe to ACM_资料(46)" href="http://www.cppblog.com/MiYu/category/14430.html/rss"><img title="Subscribe to ACM_资料(46)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl30_Link" href="http://www.cppblog.com/MiYu/category/14401.html">C/C++(17)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl30_RssLink" title="Subscribe to C/C++(17)" href="http://www.cppblog.com/MiYu/category/14401.html/rss"><img title="Subscribe to C/C++(17)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl31_Link" href="http://www.cppblog.com/MiYu/category/15062.html">IT 资讯(1)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl31_RssLink" title="Subscribe to IT 资讯(1)" href="http://www.cppblog.com/MiYu/category/15062.html/rss"><img title="Subscribe to IT 资讯(1)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl32_Link" href="http://www.cppblog.com/MiYu/category/14404.html">JAVA(1)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl32_RssLink" title="Subscribe to JAVA(1)" href="http://www.cppblog.com/MiYu/category/14404.html/rss"><img title="Subscribe to JAVA(1)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl33_Link" href="http://www.cppblog.com/MiYu/category/14412.html">Linux(3)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl33_RssLink" title="Subscribe to Linux(3)" href="http://www.cppblog.com/MiYu/category/14412.html/rss"><img title="Subscribe to Linux(3)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl34_Link" href="http://www.cppblog.com/MiYu/category/14403.html">MOOD(3)</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl34_RssLink" title="Subscribe to MOOD(3)" href="http://www.cppblog.com/MiYu/category/14403.html/rss"><img title="Subscribe to MOOD(3)" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl35_Link" href="http://www.cppblog.com/MiYu/category/14405.html">PHP</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl35_RssLink" title="Subscribe to PHP" href="http://www.cppblog.com/MiYu/category/14405.html/rss"><img title="Subscribe to PHP" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl36_Link" href="http://www.cppblog.com/MiYu/category/14402.html">QT</a><a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl36_RssLink" title="Subscribe to QT" href="http://www.cppblog.com/MiYu/category/14402.html/rss"><img title="Subscribe to QT" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			
+				</ul>
+			
+	
+		<h3>随笔档案<span style="font-size:11px;font-weight:normal">(182)</span></h3>
+		
+				<ul>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl01_Link" href="http://www.cppblog.com/MiYu/archive/2010/12.html">2010年12月 (1)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl02_Link" href="http://www.cppblog.com/MiYu/archive/2010/11.html">2010年11月 (8)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl03_Link" href="http://www.cppblog.com/MiYu/archive/2010/10.html">2010年10月 (27)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl04_Link" href="http://www.cppblog.com/MiYu/archive/2010/09.html">2010年9月 (14)</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl05_Link" href="http://www.cppblog.com/MiYu/archive/2010/08.html">2010年8月 (132)</a></li>
+			
+				</ul>
+			
+	
+		<h3>FRIENDS</h3>
+		
+				<ul>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl01_Link" href="http://www.wutianqi.com/">Tanky Woo 的程序人生</a></li>
+			<li style="margin-top:2px;">哥的竞争对手, 目前ACM题目在我之下 ^_^</li>
+				<li><a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl02_Link" href="http://www.awaysoft.com/">涛儿软件工作室</a></li>
+			
+				<li><a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl03_Link" href="http://www.cnblogs.com/ambition/">小A&lt;-0rz</a><a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl03_RssLink" title="Subscribe to 小A&lt;-0rz" href="http://www.cnblogs.com/ambition/"><img title="Subscribe to 小A&lt;-0rz" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml_small.gif" style="border-width:0px;"></a></li>
+			<li style="margin-top:2px;">神牛级人物 &lt;- 0rz</li>
+				</ul>
+			
+	
+
+<script language="JavaScript">
+function SearchGoogle(key,evt,site)
+		{
+			if(evt.keyCode==13 || evt.keyCode==0 || evt.type =='click')
+			{
+				key.focus();
+				var keystr = encodeURIComponent(key.value);
+				url = "http://www.google.com/search?q=";
+				url = url+keystr;
+				url += "&ie=UTF-8&oe=GB2312&hl=zh-CN&domains="+site+"&sitesearch="+site;
+				window.location=url;
+				return false;
+			}
+		}
+</script>
+<h3>搜索</h3>
+<ul>
+	<li>
+		</li><li><input style="WIDTH: 130px" type="text" name="q" id="q" onkeydown="return SearchGoogle(document.getElementById(&#39;q&#39;),event,&#39;www.cppblog.com/MiYu&#39;)">&nbsp;<input onclick="SearchGoogle(document.getElementById(&#39;q&#39;),event,&#39;www.cppblog.com/MiYu&#39;)" type="button" value="搜索" name="sa">
+	</li>
+</ul>
+
+<h3>积分与排名</h3>
+<ul>
+	<li>
+		积分 -
+		131575
+	</li><li>
+		排名 -
+		118
+	</li>
+</ul>
+
+<h3>最新随笔</h3>
+<div class="RecentComment">
+<ul style="word-break:break-all">
+	
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl00_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/12/19/136956.html">1.&nbsp;博客搬家了......http://orz.miyuoo.com</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl01_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/11/16/133824.html">2.&nbsp;HDU 3468 HDOJ 3468 A Simple Problem with Integers ACM 3468 IN HDU</a></li>
+		
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl01_RecentPostsList2_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/11/16/133819.html">3.&nbsp;HDU 2574 HDOJ 2574 Hdu Girls' Day ACM 2574 IN HDU</a></li>
+		
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl01_RecentPostsList2_ctl02_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/11/16/133809.html">4.&nbsp;HDU 2573 HDOJ 2573 Typing ACM 2573 IN HDU</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl02_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/11/14/133577.html">5.&nbsp;HDU 3584 HDOJ 3584 Cube  ACM 3584 IN HDU</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl03_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/11/12/133405.html">6.&nbsp;(转)伸展树 ( Splay tree )</a></li>
+		
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl03_RecentPostsList2_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/11/12/133404.html">7.&nbsp;Splay Tree 介绍</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl04_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/11/09/133085.html">8.&nbsp;成都区域赛酱油总结</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl05_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/11/01/132034.html">9.&nbsp;10省赛后 好累........</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl06_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/29/131711.html">10.&nbsp;树状数组 （Binary Indexed Trees ）论文解析</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl07_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/28/131671.html">11.&nbsp;HDU 3082 HDOJ 3082 Simplify The Circuit ACM 3082 IN HDU</a></li>
+		
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl07_RecentPostsList2_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/28/131663.html">12.&nbsp;HDU 1098 HDOJ 1098 Ignatius's puzzle ACM 1098 IN HDU</a></li>
+		
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl07_RecentPostsList2_ctl02_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/28/131654.html">13.&nbsp;HDU 1230 HDOJ 1230 火星A+B ACM 1230 IN HDU </a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl08_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/27/131506.html">14.&nbsp;HDU 2689 HDOJ 2689 Sort it ACM 2689 IN HDU </a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl09_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/25/131236.html">15.&nbsp;HDU 2561 HDOJ 2561 第二小整数 ACM 2561 IN HDU</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl10_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/24/131043.html">16.&nbsp;HDU 1512 HDOJ 1512 Monkey King ( 左偏树 ) ACM 1512 IN HDU</a></li>
+		
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl10_RecentPostsList2_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/24/131040.html">17.&nbsp;左偏树详解 ( 转载 )</a></li>
+		
+		
+	
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl11_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/23/131018.html">18.&nbsp;Bellman-Ford &amp;&amp; SPFA 算法</a></li>
+		
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl11_RecentPostsList2_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/23/131017.html">19.&nbsp;trie树--详解</a></li>
+		
+			<li><a id="SingleColumn1__b6d93d_RecentPostsList_ctl11_RecentPostsList2_ctl02_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/23/131014.html">20.&nbsp;前向星+SPFA(转载)</a></li>
+		
+	
+</ul>
+</div>
+
+<h3>最新评论
+	<a id="SingleColumn1__b929d6_RSSHyperlink1" href="http://www.cppblog.com/MiYu/CommentsRSS.aspx"><img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/xml.gif" style="border-width:0px;"></a></h3>
+<div class="RecentComment">
+	
+			<ul>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__b929d6_CommentList_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2014/12/16/122573.html#209195">1.&nbsp;re: 卡特兰数 Catalan数 ( ACM 数论 组合 )</a>
+			</li>
+			<li style="word-break:break-all">
+				评论内容较长,点击标题查看
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--zfff</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__b929d6_CommentList_ctl02_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2013/08/22/125199.html#202697">2.&nbsp;re: 线段树入门 (zz)</a>
+			</li>
+			<li style="word-break:break-all">
+				更正：右结点代表的线段为 :[( a + b ) / 2 + 1 , b]。
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--ACMer</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__b929d6_CommentList_ctl03_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2013/07/13/129775.html#201776">3.&nbsp;re: HDU 3016  HDOJ 3016 Man Down ACM 3016 IN HDU</a>
+			</li>
+			<li style="word-break:break-all">
+				pascal 版的有吗？？<br>
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--fegnchen</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__b929d6_CommentList_ctl04_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2013/05/09/122830.html#200123">4.&nbsp;re: HDOJ HDU 1850 Being a Good Boy in Spring Festival ACM 1850 IN HDU </a>
+			</li>
+			<li style="word-break:break-all">
+				评论内容较长,点击标题查看
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--zweite</li>
+		
+			<li style="word-break:break-all">
+				<a id="SingleColumn1__b929d6_CommentList_ctl05_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2012/08/14/124649.html#187193">5.&nbsp;re: ACM 博弈 只是总结 ( ZZ自奋斗哥 )</a>
+			</li>
+			<li style="word-break:break-all">
+				好
+			</li>
+			<li style="text-align:right;margin-right:4px">
+				--forget~</li>
+		
+			</ul>
+		
+</div>
+
+<h3>阅读排行榜</h3>
+<div class="RecentComment">
+	
+			<ul style="word-break:break-all">
+		
+			<li>
+				<a id="SingleColumn1__2488036_TopList_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.aspx">1.&nbsp;卡特兰数 Catalan数 ( ACM 数论 组合 )(14668)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__2488036_TopList_ctl02_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/05/122290.aspx">2.&nbsp;母函数 ( Generating function ) 详解 &lt;转载自奋斗哥のblog&gt;(3649)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__2488036_TopList_ctl03_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/09/01/125539.aspx">3.&nbsp;学习笔记 -- 关于 STL 中的 heap ( 堆 )(2937)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__2488036_TopList_ctl04_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/10/15/129997.aspx">4.&nbsp;PKU 2528 POJ 2528 Mayor's posters ( 线段树+离散化 ) ACM 2528 IN PKU(2736)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__2488036_TopList_ctl05_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/26/124804.aspx">5.&nbsp;HDOJ 部分分类(2399)</a>
+			</li>
+		
+			</ul>
+		
+</div>
+
+<h3>评论排行榜</h3>
+<div class="RecentComment">
+	
+			<ul style="word-break:break-all">
+		
+			<li>
+				<a id="SingleColumn1__1cd273d_TopList_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/09/02/125610.aspx">1.&nbsp;fill memset for 小测试(9)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__1cd273d_TopList_ctl02_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/05/122290.aspx">2.&nbsp;母函数 ( Generating function ) 详解 &lt;转载自奋斗哥のblog&gt;(6)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__1cd273d_TopList_ctl03_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/10/122978.aspx">3.&nbsp;HDOJ 2147 HDU 2147 kiki's game ACM 2147 IN HDU (5)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__1cd273d_TopList_ctl04_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/06/122418.aspx">4.&nbsp;HDOJ HDU 2059 龟兔赛跑 ACM 2059 IN HDU (5)</a>
+			</li>
+		
+			<li>
+				<a id="SingleColumn1__1cd273d_TopList_ctl05_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/08/122704.aspx">5.&nbsp;HDOJ HDU 1228 A + B ACM 1228 IN HDU (4)</a>
+			</li>
+		
+			</ul>
+		
+</div>
+
+				
+			</div>
+		</td>
+		<td class="MainCell" width="100%">
+			<div id="main">
+				
+					
+	<div class="post">
+		<div class="posthead">
+			<h2>
+				<a id="viewpost1_TitleUrl" class="singleposttitle" href="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客.html">卡特兰数 Catalan数 ( ACM 数论 组合 )</a>
+			</h2>
+ 			Posted on 2010-08-07 21:51 <a href="http://www.cppblog.com/MiYu/">MiYu</a> 阅读(14669) <a href="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html#Post">评论(1)</a> &nbsp;<a href="http://www.cppblog.com/MiYu/admin/EditPosts.aspx?postid=122573">编辑</a>&nbsp;<a href="http://www.cppblog.com/MiYu/AddToFavorite.aspx?id=122573">收藏</a> <a href="http://www.cppblog.com/MiYu/services/trackbacks/122573.aspx">引用</a>  所属分类: <a href="http://www.cppblog.com/MiYu/category/14425.html">ACM ( 数论 )</a> 、<a href="http://www.cppblog.com/MiYu/category/14430.html">ACM_资料</a> 、<a href="http://www.cppblog.com/MiYu/category/14445.html">ACM ( 组合 )</a> 
+			<img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/122573.html" width="1" height="1">
+			
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html"
+dc:identifier="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html"
+dc:title="卡特兰数 Catalan数 ( ACM 数论 组合 )"
+trackback:ping="http://www.cppblog.com/MiYu/services/trackbacks/122573.aspx" />
+</rdf:RDF>
+-->
+
+		</div>
+		<div class="postbody">
+<div style="border-left-color: rgb(204, 204, 204); padding-bottom: 4px; background-color: rgb(238, 238, 238); padding-left: 4px; width: 98%; padding-right: 5px; font-size: 14pt; word-break: break-all; padding-top: 4px; "><span style="COLOR: #000000"><span style="WIDOWS: 2; TEXT-TRANSFORM: none; TEXT-INDENT: 0px; BORDER-COLLAPSE: separate; FONT: 16px sans-serif; WHITE-SPACE: normal; ORPHANS: 2; LETTER-SPACING: normal; COLOR: rgb(0,0,0); WORD-SPACING: 0px; -webkit-border-horizontal-spacing: 0px; -webkit-border-vertical-spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px"><span style="LINE-HEIGHT: 24px">
+<h1 style="BACKGROUND-IMAGE: none; BORDER-BOTTOM: rgb(170,170,170) 1px solid; PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.2em; MARGIN: 0px 0px 0.1em; WIDTH: auto; COLOR: black; FONT-SIZE: 1.6em; FONT-WEIGHT: normal; PADDING-TOP: 0px; background-origin: initial; background-clip: initial" id="firstHeading" class="firstHeading"><span style="COLOR: red; FONT-SIZE: 24pt">维基百科资料</span>:</h1>
+<p style="BACKGROUND-IMAGE: none; BORDER-BOTTOM: rgb(170,170,170) 1px solid; PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.2em; MARGIN: 0px 0px 0.1em; WIDTH: auto; COLOR: black; FONT-SIZE: 1.6em; FONT-WEIGHT: normal; PADDING-TOP: 0px; background-origin: initial; background-clip: initial" class="firstHeading">&nbsp;</p>
+<h1 style="BACKGROUND-IMAGE: none; BORDER-BOTTOM: rgb(170,170,170) 1px solid; PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.2em; MARGIN: 0px 0px 0.1em; WIDTH: auto; COLOR: black; FONT-SIZE: 1.6em; FONT-WEIGHT: normal; PADDING-TOP: 0px; background-origin: initial; background-clip: initial" class="firstHeading">卡塔兰数</h1>
+<div style="position: relative; line-height: 1.5em; width: 1232px; font-size: 15px; " id="bodyContent">
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em"><strong>卡塔兰数</strong>是<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="mw-redirect" title="组合数学" href="http://www.cppblog.com/zh-cn/%E7%B5%84%E5%90%88%E6%95%B8%E5%AD%B8">组合数学</a>中一个常出现在各种计数问题中出现的<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="数列" href="http://www.cppblog.com/zh-cn/%E6%95%B0%E5%88%97">数列</a>。由以<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="mw-redirect" title="比利时" href="http://www.cppblog.com/zh-cn/%E6%AF%94%E5%88%A9%E6%99%82">比利时</a>的数学家<a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="欧仁·查理·卡塔兰（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=%E6%AC%A7%E4%BB%81%C2%B7%E6%9F%A5%E7%90%86%C2%B7%E5%8D%A1%E5%A1%94%E5%85%B0&action=edit&redlink=1">欧仁·查理·卡塔兰</a><span class="Apple-converted-space">&nbsp;</span>(<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="1814年" href="http://www.cppblog.com/zh-cn/1814%E5%B9%B4">1814</a>–<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="1894年" href="http://www.cppblog.com/zh-cn/1894%E5%B9%B4">1894</a>)命名。</p>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">卡塔兰数的一般项公式为<span class="Apple-converted-space">&nbsp;</span><img style="BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; MARGIN: 0px; BORDER-TOP-STYLE: none; VERTICAL-ALIGN: middle; BORDER-LEFT-STYLE: none" class="tex" alt="C_n = \frac{1}{n+1}{2n \choose n} = \frac{(2n)!}{(n+1)!n!}" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/d118d8cea7b639dfd5244fcba65910cf.png">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 另类递归式：&nbsp; h(n)<span style="COLOR: #000000">=</span><span style="COLOR: #000000">((</span><span style="COLOR: #000000">4</span><span style="COLOR: #000000">*</span><span style="COLOR: #000000">n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">)</span><span style="COLOR: #000000">/</span><span style="COLOR: #000000">(n</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">))</span><span style="COLOR: #000000">*</span><span style="COLOR: #000000">h(n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">);</span></p>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">前几项为 （<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="整数数列线上大全" href="http://www.cppblog.com/zh-cn/%E6%95%B4%E6%95%B8%E6%95%B8%E5%88%97%E7%B7%9A%E4%B8%8A%E5%A4%A7%E5%85%A8">OEIS</a>中的数列<a style="BACKGROUND-IMAGE: none; PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; COLOR: rgb(51,102,187); TEXT-DECORATION: none; PADDING-TOP: 0px; background-origin: initial; background-clip: initial" class="extiw" title="oeis:A000108" href="http://oeis.org/A000108">A000108</a>）: 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786, 208012, 742900, 2674440, 9694845, 35357670, 129644790, 477638700, 1767263190, 6564120420, 24466267020, 91482563640, 343059613650, 1289904147324, 4861946401452, ...</p>
+<h2 style="BACKGROUND-IMAGE: none; BORDER-BOTTOM: rgb(170,170,170) 1px solid; PADDING-BOTTOM: 0.17em; MARGIN: 0px 0px 0.6em; WIDTH: auto; COLOR: black; FONT-SIZE: 22px; FONT-WEIGHT: normal; PADDING-TOP: 0.5em; background-origin: initial; background-clip: initial"><span style="FLOAT: right; MARGIN-LEFT: 1em; FONT-SIZE: 15px; FONT-WEIGHT: normal !important" class="editsection">[<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="编辑段落：性质" href="http://www.cppblog.com/w/index.php?title=%E5%8D%A1%E5%A1%94%E5%85%B0%E6%95%B0&action=edit&section=1">编辑</a>]</span><span id=".E6.80.A7.E8.B4.A8" class="mw-headline">性质</span></h2>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em"><em>C</em><sub><em>n</em></sub>的另一个表达形式为<img style="BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; MARGIN: 0px; BORDER-TOP-STYLE: none; VERTICAL-ALIGN: middle; BORDER-LEFT-STYLE: none" class="tex" alt="C_n = {2n\choose n} - {2n\choose n-1} \quad\mbox{ for }n\ge 1" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/bd669af776b1293f2e8848dbcfa5a6f3.png"><span class="Apple-converted-space">&nbsp;</span>所以，<em>C</em><sub><em>n</em></sub>是一个<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="自然数" href="http://www.cppblog.com/zh-cn/%E8%87%AA%E7%84%B6%E6%95%B0">自然数</a>；这一点在先前的通项公式中并不显而易见。这个表达形式也是André对前一公式证明的基础。(见下文的<a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="第二个证明（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=%E7%AC%AC%E4%BA%8C%E4%B8%AA%E8%AF%81%E6%98%8E&action=edit&redlink=1">第二个证明</a>。)</p>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">卡塔兰数满足以下<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="mw-redirect" title="递推关系" href="http://www.cppblog.com/zh-cn/%E9%80%92%E6%8E%A8%E5%85%B3%E7%B3%BB">递推关系</a></p>
+<dl style="MARGIN-TOP: 0.2em; MARGIN-BOTTOM: 0.5em">
+<dd style="LINE-HEIGHT: 1.5em; MARGIN-BOTTOM: 0.1em; MARGIN-LEFT: 2em"><img style="BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-TOP-STYLE: none; VERTICAL-ALIGN: middle; BORDER-LEFT-STYLE: none" class="tex" alt="C_0 = 1 \quad \mbox{and} \quad C_{n+1}=\sum_{i=0}^{n}C_i\,C_{n-i}\quad\mbox{for }n\ge 0." src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/6217b3c99a3243afcd5d8dbd58186822.png"></dd></dl>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">它也满足</p>
+<dl style="MARGIN-TOP: 0.2em; MARGIN-BOTTOM: 0.5em">
+<dd style="LINE-HEIGHT: 1.5em; MARGIN-BOTTOM: 0.1em; MARGIN-LEFT: 2em"><img style="BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-TOP-STYLE: none; VERTICAL-ALIGN: middle; BORDER-LEFT-STYLE: none" class="tex" alt="C_0 = 1 \quad \mbox{and} \quad C_{n+1}=\frac{2(2n+1)}{n+2}C_n," src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/8a49332e4a46b3a2c7accec81160f5e3.png"></dd></dl>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">这提供了一个更快速的方法来计算卡塔兰数。</p>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">卡塔兰数的渐近增长为</p>
+<dl style="MARGIN-TOP: 0.2em; MARGIN-BOTTOM: 0.5em">
+<dd style="LINE-HEIGHT: 1.5em; MARGIN-BOTTOM: 0.1em; MARGIN-LEFT: 2em"><img style="BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-TOP-STYLE: none; VERTICAL-ALIGN: middle; BORDER-LEFT-STYLE: none" class="tex" alt="C_n \sim \frac{4^n}{n^{3/2}\sqrt{\pi}}" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/3f838aaa56c7ec71f80454fc181fea99.png"></dd></dl>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">它的含义是左式除以右式的商<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="极限" href="http://www.cppblog.com/zh-cn/%E6%9E%81%E9%99%90">趋向于</a>1当<em>n</em>&nbsp;→&nbsp;∞。（这可以用<em>n</em>!的<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="斯特灵公式" href="http://www.cppblog.com/zh-cn/%E6%96%AF%E7%89%B9%E9%9D%88%E5%85%AC%E5%BC%8F">斯特灵公式</a>来证明。）</p>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">所有的奇卡塔兰数<em>C</em><sub><em>n</em></sub>都满足<span style="FONT-FAMILY: serif" class="texhtml"><em>n</em><span class="Apple-converted-space">&nbsp;</span>= 2<sup><em>k</em></sup><span class="Apple-converted-space">&nbsp;</span>− 1</span>。所有其他的卡塔兰数都是偶数。</p>
+<h2 style="BACKGROUND-IMAGE: none; BORDER-BOTTOM: rgb(170,170,170) 1px solid; PADDING-BOTTOM: 0.17em; MARGIN: 0px 0px 0.6em; WIDTH: auto; COLOR: black; FONT-SIZE: 22px; FONT-WEIGHT: normal; PADDING-TOP: 0.5em; background-origin: initial; background-clip: initial"><span style="FLOAT: right; MARGIN-LEFT: 1em; FONT-SIZE: 15px; FONT-WEIGHT: normal !important" class="editsection">[<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="编辑段落：应用" href="http://www.cppblog.com/w/index.php?title=%E5%8D%A1%E5%A1%94%E5%85%B0%E6%95%B0&action=edit&section=2">编辑</a>]</span><span id=".E5.BA.94.E7.94.A8" class="mw-headline">应用</span></h2>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em"><a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="组合数学" href="http://www.cppblog.com/zh-cn/%E7%BB%84%E5%90%88%E6%95%B0%E5%AD%A6">组合数学</a>中有非常多.的组合结构可以用卡塔兰数来计数。在Richard P. Stanley的Enumerative Combinatorics: Volume 2一书的习题中包括了66个相异的可由卡塔兰数表达的组合结构。以下用<em>C</em><sub><em>n</em></sub>=3和<em>C</em><sub><em>n</em></sub>=4举若干例：</p>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em"><em>C</em><sub><em>n</em></sub>表示长度<em>2n</em>的dyck word的个数。Dyck word是一个有<em>n</em>个X和<em>n</em>个Y组成的字串，且所有的部分字串皆满足X的个数大于等于Y的个数。以下为长度为6的dyck words: </li>
+</ul>
+<center>XXXYYY XYXXYY XYXYXY XXYYXY XXYXYY</center>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em">将上例的X换成左括号，Y换成右括号，<em>C</em><sub><em>n</em></sub>表示所有包含<em>n</em>组括号的合法运算式的个数: </li>
+</ul>
+<center>((())) ()(()) ()()() (())() (()())</center>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em"><em>C</em><sub><em>n</em></sub>表示有<em>n+1</em>个叶子的<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="二叉树" href="http://www.cppblog.com/zh-cn/%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a>的个数。 </li>
+</ul>
+<p style="MARGIN-BOTTOM: 0.1em">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <img border="0" alt="" src="http://www.cppblog.com/images/cppblog_com/miyu/Catalan_number_binary_tree_example.png" width="496" height="92"></p>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em"><em>C</em><sub><em>n</em></sub>表示所有不同构的含<em>n</em>个分枝结点的满<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="二叉树" href="http://www.cppblog.com/zh-cn/%E4%BA%8C%E5%8F%89%E6%A0%91">二叉树</a>的个数。（一个有根二叉树是满的当且仅当每个结点都有两个子树或没有子树。） </li>
+</ul>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em"><em>证明：</em></p>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">令1表示进栈，0表示出栈，则可转化为求一个<em>2n</em>位、含<em>n</em>个1、<em>n</em>个0的二进制数，满足从左往右扫描到任意一位时，经过的0数不多于1数。显然含<em>n</em>个1、<em>n</em>个0的<em>2n</em>位二进制数共有<img style="BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; MARGIN: 0px; BORDER-TOP-STYLE: none; VERTICAL-ALIGN: middle; BORDER-LEFT-STYLE: none" class="tex" alt="{2n \choose n}" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/c92da943df73dc077dbee5514376346a.png">个，下面考虑不满足要求的数目.<br></p>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">考虑一个含<em>n</em>个1、<em>n</em>个0的2n位二进制数，扫描到第<em>2m+1</em>位上时有<em>m+1</em>个0和<em>m</em>个1（容易证明一定存在这样的情况），则后面的0-1排列中必有<em>n-m</em>个1和<em>n-m-1</em>个0。将<em>2m+2</em>及其以后的部分0变成1、1变成0，则对应一个<em>n+1</em>个0和<em>n-1</em>个1的二进制数。反之亦然（相似的思路证明两者一一对应）。</p>
+<p style="LINE-HEIGHT: 1.5em; MARGIN: 0.4em 0px 0.5em">从而<img style="BORDER-BOTTOM-STYLE: none; BORDER-RIGHT-STYLE: none; MARGIN: 0px; BORDER-TOP-STYLE: none; VERTICAL-ALIGN: middle; BORDER-LEFT-STYLE: none" class="tex" alt="C_n = {2n \choose n} - {2n \choose n + 1} = \frac{1}{n+1}{2n \choose n}" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/4828faf1c29e4b699529f2275cc63453.png">。证毕。</p>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em"><em>C</em><sub><em>n</em></sub>表示所有在<em>n</em><span class="Apple-converted-space">&nbsp;</span>×<span class="Apple-converted-space">&nbsp;</span><em>n</em>格点中不越过对角线的<strong>单调路径</strong>的个数。一个单调路径从格点左下角出发，在格点右上角结束，每一步均为向上或向右。计算这种路径的个数等价于计算Dyck word的个数： X代表“向右”，Y代表“向上”。下图为<em>n</em><span class="Apple-converted-space">&nbsp;</span>= 4的情况：
+    </li><li style="MARGIN-BOTTOM: 0.1em">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img border="0" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/450px-Catalan_number_4x4_grid_example.svg.png"> </li>
+</ul>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em"><em>C</em><sub><em>n</em></sub>表示通过连结顶点而将<em>n</em>&nbsp;+&nbsp;2边的<a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="凸多边形（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=%E5%87%B8%E5%A4%9A%E8%BE%B9%E5%BD%A2&action=edit&redlink=1">凸多边形</a>分成<a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="三角形（几何）（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=%E4%B8%89%E8%A7%92%E5%BD%A2%EF%BC%88%E5%87%A0%E4%BD%95%EF%BC%89&action=edit&redlink=1">三角形</a>的方法个数。下图中为<em>n</em><span class="Apple-converted-space">&nbsp;</span>= 4的情况： </li>
+</ul>
+<p style="MARGIN-BOTTOM: 0.1em">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img border="0" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/400px-Catalan-Hexagons-example.svg.png"></p>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em"><em>C</em><sub><em>n</em></sub>表示对{1, ...,<span class="Apple-converted-space">&nbsp;</span><em>n</em>}依序进出<a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="栈（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=%E6%A0%88&action=edit&redlink=1">栈</a>的<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="mw-redirect" title="置换" href="http://www.cppblog.com/zh-cn/%E7%BD%AE%E6%8D%A2">置换</a>个数。一个置换<em>w</em>是依序进出栈的当<em>S</em>(<em>w</em>) = (1, ...,<span class="Apple-converted-space">&nbsp;</span><em>n</em>), 其中<em>S</em>(<em>w</em>)递归定义如下：令<em>w</em><span class="Apple-converted-space">&nbsp;</span>=<span class="Apple-converted-space">&nbsp;</span><em>unv</em>，其中<em>n</em>为<em>w</em>的最大元素，<em>u</em>和<em>v</em>为更短的数列；再令<em>S</em>(<em>w</em>) =<em>S</em>(<em>u</em>)<em>S</em>(<em>v</em>)<em>n</em>，其中<em>S</em>为所有含一个元素的数列的单位元。 </li>
+</ul>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em"><em>C</em><sub><em>n</em></sub>表示集合{1, ...,<span class="Apple-converted-space">&nbsp;</span><em>n</em>}的<a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="不交叉划分（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=%E4%B8%8D%E4%BA%A4%E5%8F%89%E5%88%92%E5%88%86&action=edit&redlink=1">不交叉划分</a>的个数. 那么,<span class="Apple-converted-space">&nbsp;</span><em>C</em><sub><em>n</em></sub><span class="Apple-converted-space">&nbsp;</span>永远不大于第<em>n</em>项<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="贝尔数" href="http://www.cppblog.com/zh-cn/%E8%B4%9D%E5%B0%94%E6%95%B0">贝尔数</a>.<span class="Apple-converted-space">&nbsp;</span><em>C</em><sub><em>n</em></sub>也表示集合{1, ..., 2<em>n</em>}的<a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="不交叉划分（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=%E4%B8%8D%E4%BA%A4%E5%8F%89%E5%88%92%E5%88%86&action=edit&redlink=1">不交叉划分</a>的个数，其中每个段落的长度为2。综合这两个结论，可以用<a style="BACKGROUND-IMAGE: none; COLOR: rgb(6,69,173); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" title="数学归纳法" href="http://www.cppblog.com/zh-cn/%E6%95%B0%E5%AD%A6%E5%BD%92%E7%BA%B3%E6%B3%95">数学归纳法</a>证明 that all of the<span class="Apple-converted-space">&nbsp;</span><em>free</em><span class="Apple-converted-space">&nbsp;</span><a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="Cumulant（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=Cumulant&action=edit&redlink=1">cumulant</a>s of degree more than 2 of the<span class="Apple-converted-space">&nbsp;</span><a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="Wigner semicircle law（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=Wigner_semicircle_law&action=edit&redlink=1">Wigner semicircle law</a><span class="Apple-converted-space">&nbsp;</span>are zero. This law is important in<span class="Apple-converted-space">&nbsp;</span><a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="Free probability（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=Free_probability&action=edit&redlink=1">free probability</a><span class="Apple-converted-space">&nbsp;</span>theory and the theory of<span class="Apple-converted-space">&nbsp;</span><a style="BACKGROUND-IMAGE: none; COLOR: rgb(204,34,0); TEXT-DECORATION: none; background-origin: initial; background-clip: initial" class="new" title="Random matrices（尚未撰写）" href="http://www.cppblog.com/w/index.php?title=Random_matrices&action=edit&redlink=1">random matrices</a>. </li>
+</ul>
+<ul style="PADDING-BOTTOM: 0px; LINE-HEIGHT: 1.5em; LIST-STYLE-TYPE: square; MARGIN: 0.3em 0px 0px 1.5em; PADDING-LEFT: 0px; PADDING-RIGHT: 0px; LIST-STYLE-IMAGE: url(http://bits.wikimedia.org/skins-1.5/vector/images/bullet-icon.png?1); PADDING-TOP: 0px">
+    <li style="MARGIN-BOTTOM: 0.1em"><em>C</em><sub><em>n</em></sub>表示用<em>n</em>个长方形填充一个高度为<em>n</em>的阶梯状图形的方法个数。下图为<span class="Apple-converted-space">&nbsp;</span><em>n</em>&nbsp;=&nbsp;4的情况: </li>
+</ul>
+<p style="MARGIN-BOTTOM: 0.1em">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img border="0" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/400px-Catalan_stairsteps_4.svg.png"></p>
+</div>
+</span></span><br><br><span style="COLOR: red; FONT-SIZE: 24pt">百度百科资料</span>:<br>简介<br><br>　　中文:卡特兰数<br>　　Catalan数是组合数学中一个常出现在各种计数问题中出现的数列。由以比利时的数学家欧仁·查理·卡塔兰&nbsp;(</span><span style="COLOR: #000000">1814</span><span style="COLOR: #000000">–</span><span style="COLOR: #000000">1894</span><span style="COLOR: #000000">)命名。<br>　　原理：<br>　　令h(</span><span style="COLOR: #000000">0</span><span style="COLOR: #000000">)</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">,h(</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">)＝</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">,catalan数满足递归式：<br>　　h(n)</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">&nbsp;h(</span><span style="COLOR: #000000">0</span><span style="COLOR: #000000">)</span><span style="COLOR: #000000">*</span><span style="COLOR: #000000">h(n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">)&nbsp;</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">&nbsp;h(</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">)</span><span style="COLOR: #000000">*</span><span style="COLOR: #000000">h(n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">)&nbsp;</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">&nbsp;<img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/dot.gif">&nbsp;</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">&nbsp;h(n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">)h(</span><span style="COLOR: #000000">0</span><span style="COLOR: #000000">)&nbsp;(其中n</span><span style="COLOR: #000000">&gt;=</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">)<br>　　该递推关系的解为：<br>　　h(n)</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">C(2n,n)</span><span style="COLOR: #000000">/</span><span style="COLOR: #000000">(n&nbsp;</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">&nbsp;</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">)&nbsp;(n</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">,</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">,</span><span style="COLOR: #000000">3</span><span style="COLOR: #000000">,<img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/dot.gif">)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font face="Arial">另类递归式：&nbsp; h(n)<span style="COLOR: #000000">=</span><span style="COLOR: #000000">((</span><span style="COLOR: #000000">4</span><span style="COLOR: #000000">*</span><span style="COLOR: #000000">n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">)</span><span style="COLOR: #000000">/</span><span style="COLOR: #000000">(n</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">))</span><span style="COLOR: #000000">*</span><span style="COLOR: #000000">h(n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">);</span></font><br>　　<br>　　前几项为&nbsp;（OEIS中的数列A000108）:&nbsp;</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">5</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">14</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">42</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">132</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">429</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">1430</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">4862</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">16796</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">58786</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">208012</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">742900</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">2674440</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">9694845</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">35357670</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">129644790</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">477638700</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">1767263190</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">6564120420</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">24466267020</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">91482563640</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">343059613650</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">1289904147324</span><span style="COLOR: #000000">,&nbsp;</span><span style="COLOR: #000000">4861946401452</span><span style="COLOR: #000000">,&nbsp;<img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/dot.gif"><br>应用<br><br>　　我总结了一下，最典型的四类应用：（实质上却都一样，无非是递归等式的应用，就看你能不能分解问题写出递归式了）<br></span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">.括号化问题。<br><br>　　矩阵链乘：&nbsp;P</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">a1×a2×a3×……×an，依据乘法结合律，不改变其顺序，只用括号表示成对的乘积，试问有几种括号化的方案？(h(n)种)<br></span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">.出栈次序问题。<br><br>　　一个栈(无穷大)的进栈序列为1,</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">,</span><span style="COLOR: #000000">3</span><span style="COLOR: #000000">,..n,有多少个不同的出栈序列</span><span style="COLOR: #000000">?</span><span style="COLOR: #000000"><br>　　类似：<br>　　(</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">)有2n个人排成一行进入剧场。入场费5元。其中只有n个人有一张5元钞票，另外n人只有10元钞票，剧院无其它钞票，问有多少中方法使得只要有10元的人买票，售票处就有5元的钞票找零？(将持5元者到达视作将5元入栈，持10元者到达视作使栈中某5元出栈)<br>　　(</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">)在圆上选择2n个点,将这些点成对连接起来，使得所得到的n条线段不相交的方法数。<br></span><span style="COLOR: #000000">3</span><span style="COLOR: #000000">.将多边行划分为三角形问题。<br><br>　　将一个凸多边形区域分成三角形区域的方法数</span><span style="COLOR: #000000">?</span><span style="COLOR: #000000"><br>　　类似：一位大城市的律师在她住所以北n个街区和以东n个街区处工作。每天她走2n个街区去上班。如果她<br>　　从不穿越（但可以碰到）从家到办公室的对角线，那么有多少条可能的道路？<br>　　类似：在圆上选择2n个点,将这些点成对连接起来使得所得到的n条线段不相交的方法数</span><span style="COLOR: #000000">?</span><span style="COLOR: #000000"><br></span><span style="COLOR: #000000">4</span><span style="COLOR: #000000">.给顶节点组成二叉树的问题。<br><br>　　给定N个节点，能构成多少种形状不同的二叉树？<br>　　(一定是二叉树</span><span style="COLOR: #000000">!</span><span style="COLOR: #000000"><br>　　先去一个点作为顶点,然后左边依次可以取0至N</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1个相对应的,右边是N</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1到0个,两两配对相乘,就是h(</span><span style="COLOR: #000000">0</span><span style="COLOR: #000000">)</span><span style="COLOR: #000000">*</span><span style="COLOR: #000000">h(n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">)&nbsp;</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">&nbsp;h(</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">)</span><span style="COLOR: #000000">*</span><span style="COLOR: #000000">h(n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">2</span><span style="COLOR: #000000">)&nbsp;</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">&nbsp;<img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/dot.gif">&nbsp;</span><span style="COLOR: #000000">+</span><span style="COLOR: #000000">&nbsp;h(n</span><span style="COLOR: #000000">-</span><span style="COLOR: #000000">1</span><span style="COLOR: #000000">)h(</span><span style="COLOR: #000000">0</span><span style="COLOR: #000000">)</span><span style="COLOR: #000000">=</span><span style="COLOR: #000000">h(n))<br>　　（能构成h（N）个）</span></div>
+</div>
+	</div><script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('AjaxHolder$scriptmanager1', document.getElementById('Form1'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tAjaxHolder$UpdatePanel1'], [], [], 90);
+//]]>
+</script>
+
+<div id="AjaxHolder_UpdatePanel1">
+	    
+    <a name="pagedcomment"></a>
+<h3>Feedback</h3>
+	
+			<div class="post">
+				<div class="posthead">
+					<h2>
+						<a title="permalink: re: 卡特兰数 Catalan数 ( ACM 数论 组合 )" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html#209195">#</a>&nbsp;<a name="209195"></a>re: 卡特兰数 Catalan数 ( ACM 数论 组合 )<a name="Post"></a>&nbsp;&nbsp;<a onclick="return SetReplyAuhor(&quot;zfff&quot;)" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html#post">回复</a>&nbsp;&nbsp;<a title="查看该作者发表过的评论" href="http://www.cppblog.com/comment?author=zfff" target="_blank">更多评论</a>
+						<a id="AjaxHolder_Comments_CommentList_ctl00_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl00$DeleteLink','')"></a>&nbsp;&nbsp;<a id="AjaxHolder_Comments_CommentList_ctl00_EditLink"></a>
+					</h2>
+					2014-12-16 18:51 by <a id="AjaxHolder_Comments_CommentList_ctl00_NameLink" href="http://qqqq/" target="_blank">zfff</a>
+				</div>
+				<div class="postbody">常用链接
+<br>我的随笔 搜索
+<br>
+<br>  
+<br>积分与排名
+<br>积分 - 116099 
+<br>排名 - 126 
+<br>最新随笔
+<br>1. 博客搬家了......<a target="_new" href="http://orz.miyuoo.com/">http://orz.miyuoo.com</a> Cn表示长度2n的dyck word的个数。Dyck word是一个有n个X和n个Y组成的字串，且所有的部分字串皆满足X的个数大于等于Y的个数。以下为长度为6的dyck words: 
+<br>XXXYYY XYXXYY XYXYXY XXYYXY XXYXYY
+<br>将上例的X换成左括号，Y换成右括号，Cn表示所有包含n组括号的合法运算式的个数: 
+<br>((())) ()(()) ()()() (())() (()())
+<br></div>
+			</div>
+		<div id="AjaxHolder_Comments_divRefreshComments" style="text-align:right;margin-right:10px;margin-bottom:5px;font-size:12px;"><a id="AjaxHolder_Comments_refreshList" href="javascript:__doPostBack('AjaxHolder$Comments$refreshList','')">刷新评论列表</a></div>
+<style>
+td { font-size: 12px }
+.commentTextBox 
+{ 
+    font-family : Verdana; 
+    font-size: 13px;
+ }
+</style>
+<!--Beging Temp Save-->
+<style>.userData { BEHAVIOR: url(#default#userdata) }
+	</style>
+<div class="userData" id="CommentsPersistDiv"></div>
+<script type="text/javascript">
+function pageLoad()
+{
+    Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(handleInitializeRequest);
+    //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(handleEndRequest);
+}
+
+function handleInitializeRequest(sender, args)
+{
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var eid = args.get_postBackElement().id;
+    if (eid.indexOf("DeleteLink")>0) 
+    {
+       args.get_postBackElement().innerHTML = "<font color='red'>正在删除...</font>";         
+    }    
+    if (eid.indexOf("btnSubmit")>0) 
+    {
+       document.getElementById("AjaxHolder_PostComment_ltSubmitMsg").innerHTML="正在提交...";
+       document.getElementById("AjaxHolder_PostComment_btnSubmit").disabled = true;
+       
+    }    
+   
+}	
+
+function TempSave(ElementID)
+{
+	try
+	{
+	CommentsPersistDiv.setAttribute("CommentContent",document.getElementById(ElementID).value);
+	CommentsPersistDiv.save("CommentXMLStore");
+	}
+	catch(ex)
+	{
+	}
+	
+}
+function Restore(ElementID)
+{
+	CommentsPersistDiv.load("CommentXMLStore");
+	document.getElementById(ElementID).value=CommentsPersistDiv.getAttribute("CommentContent");
+}	
+			
+			
+</script>
+<!--Ene TempSave-->
+<div class="commentform">
+<span id="AjaxHolder_PostComment_ltSubmitMsg" style="color:Red;"></span>
+<br>
+<a name="Feedback"></a>
+	<table cellspacing="1" cellpadding="1" border="0">
+		<tbody><tr>			
+		<td id="AjaxHolder_PostComment_tdOnCommentForm" colspan="3">			
+		</td>
+	
+		</tr>
+		<tr>
+			<td colspan="3">
+<script type="Text/Javascript">
+try{
+  GA_googleFillSlot("cppblog_commentbox_up");
+  } catch (e) { }
+</script>
+<br> </td>
+		</tr>
+		<tr>
+			<td width="75"></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td colspan="2">
+			<a href="http://job.cnblogs.com/" target="_blank">找优秀程序员，就在博客园</a>
+			<!--<a href="http://www.cnblogs.com" target="_blank">博客园</a>&nbsp;  <a href="http://q.cnblogs.com/" target="_blank">博问</a>&nbsp; <a href="http://news.cnblogs.com" target="_blank">IT新闻</a>&nbsp; <a href="http://job.cnblogs.com/cate-cpp_programmer/" target="_blank">C++程序员招聘</a>-->
+			</td>
+		</tr>
+		<tr>
+			<td width="55">标题</td>
+			<td><input name="AjaxHolder$PostComment$tbTitle" type="text" value="re: 卡特兰数 Catalan数 ( ACM 数论 组合 )" id="AjaxHolder_PostComment_tbTitle" class="commenttb" style="width:320"></td>
+			<td><span id="AjaxHolder_PostComment_RequiredFieldValidator1" style="color:Red;visibility:hidden;">请输入标题</span></td>
+		</tr>
+		<tr>
+			<td>姓名</td>
+			<td><input name="AjaxHolder$PostComment$tbName" type="text" id="AjaxHolder_PostComment_tbName" class="commenttb" style="width:320"></td>
+			<td><span id="AjaxHolder_PostComment_RequiredFieldValidator2" style="color:Red;visibility:hidden;">请输入你的姓名</span></td>
+		</tr>
+		<tr>
+			<td>主页</td>
+			<td><input name="AjaxHolder$PostComment$tbUrl" type="text" id="AjaxHolder_PostComment_tbUrl" class="commenttb" style="width:320"></td>
+			<td><font face="宋体"></font></td>
+		</tr>
+		<tr>
+			<td align="left" colspan="3">
+				<table id="AjaxHolder_PostComment_tbCaptchaImage" class="CommentForm" cellspacing="0" cellpadding="0" border="0">
+		<tbody><tr>
+			<td colspan="3">
+							<span id="AjaxHolder_PostComment_Requiredfieldvalidator4" style="color:Red;display:none;">请输入验证码</span>
+							<span id="AjaxHolder_PostComment_lblImage" style="color:Red;font-weight:bold;"></span>
+						</td>
+		</tr>
+		<tr>
+			<td width="78">验证码</td>
+			<td><input name="AjaxHolder$PostComment$CodeNumberTextBox" type="text" id="AjaxHolder_PostComment_CodeNumberTextBox">*</td>
+			<td align="left">
+							<img src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/JpegImage.aspx" id="AjaxHolder_PostComment_Img1">
+						</td>
+		</tr>
+	</tbody></table>
+	
+			</td>
+		</tr>
+		<tr>
+			<td colspan="3">内容(提交失败后,可以通过“恢复上次提交”恢复刚刚提交的内容)
+				<span id="AjaxHolder_PostComment_RequiredFieldValidator3" style="color:Red;visibility:hidden;">请输入评论内容</span><br>
+				<textarea name="AjaxHolder$PostComment$tbComment" rows="10" cols="50" id="AjaxHolder_PostComment_tbComment" class="commentTextBox" onkeydown="ctlent(event,&#39;AjaxHolder_PostComment_tbComment&#39;)" style="Width:480;Height:220"></textarea></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+		<span id="AjaxHolder_PostComment_Message" style="color:Red;"></span>
+		</td>
+		</tr><tr>
+			<td colspan="3"><input id="AjaxHolder_PostComment_chkRemember" type="checkbox" name="AjaxHolder$PostComment$chkRemember" checked="checked" tabindex="-1"><label for="AjaxHolder_PostComment_chkRemember">Remember Me?</label></td>
+		</tr>
+		<tr>
+			<td height="23"><input type="submit" name="AjaxHolder$PostComment$btnSubmit" value="提交" onclick="TempSave(&#39;AjaxHolder_PostComment_tbComment&#39;);WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;AjaxHolder$PostComment$btnSubmit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="AjaxHolder_PostComment_btnSubmit">
+				</td>
+			<td colspan="2" height="23">&nbsp;
+				<a id="AjaxHolder_PostComment_lnkLogin" href="http://www.cppblog.com/login.aspx?ReturnURL=http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html&SourceURL=/MiYu/archive/2010/08/07/122573.html">登录</a>&nbsp;&nbsp;<a id="AjaxHolder_PostComment_linkLoginComment" onclick="if(document.getElementById(&#39;AjaxHolder_PostComment_tbComment&#39;).value != &#39;&#39;) return confirm(&#39;未提交的评论内容将会丢失, 你真的要进入高级评论吗?&#39;);" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html?login=1#Post">使用高级评论</a>&nbsp;&nbsp;<a href="http://www.cppblog.com/RequireRegister.aspx">新用户注册</a>&nbsp;&nbsp;<a href="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html#Top">返回页首</a>&nbsp;&nbsp;<a id="AjaxHolder_PostComment_lbRestore" onclick="Restore(&#39;AjaxHolder_PostComment_tbComment&#39;); return false;" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html#Post">恢复上次提交</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+		</tr>
+		<tr>
+			<td colspan="3">[使用Ctrl+Enter键可以直接提交]</td>
+		</tr>
+		<tr>
+		<td colspan="3" style="line-height:2.5">
+		<a href="http://www.ucancode.com/index.htm" target="_blank">【推荐】超50万行VC++源码: 大型组态工控、电力仿真CAD与GIS源码库</a><br>
+		<script type="text/javascript">
+		(function() {
+		var useSSL = 'https:' == document.location.protocol;
+		var src = (useSSL ? 'https:' : 'http:') +
+		'//www.googletagservices.com/tag/js/gpt.js';
+		document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+		})();
+		</script><script src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/gpt.js"></script>
+
+		<script type="text/javascript">
+		googletag.defineSlot('/1090369/cppblog_blogpost_bottom', [300, 250], 'div-gpt-ad-1391948236744-0').addService(googletag.pubads());
+		googletag.pubads().enableSyncRendering();
+		googletag.pubads().enableSingleRequest();
+		googletag.enableServices();
+		</script>
+		
+		<!-- cppblog_blogpost_bottom -->
+		<div id="div-gpt-ad-1391948236744-0" style="width:300px; height:250px;">
+		<script type="text/javascript">
+		googletag.display('div-gpt-ad-1391948236744-0');
+		</script>
+		</div>
+		</td>
+		</tr>
+		<tr>			
+		<td colspan="3">
+		
+		</td>
+		</tr>
+		<tr>
+			<td colspan="3" height="5">
+<div id="divRelativePosts">
+相关文章:
+	
+			<ul style="margin-top:0px;line-height:1.8;">
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl01_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/15/123511.html">HDOJ 1999 HDU 1999 不可摸数 ACM 1999 IN HDU </a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl02_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/13/123386.html">HDOJ 1286 HDU 1286 找新朋友 ACM 1286 IN HDU </a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl03_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/08/122676.html">HDOJ HDU 1133 Buy the Ticket ACM 1133 IN HDU </a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl04_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/08/122674.html">HDOJ HDU 1023 1130 1133 1134 2067 ACM 1023 1130 1133 1134 2067 IN HDU ( 卡特兰数 专题 catalan )</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl05_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/08/122615.html">错排公式 ( ACM 数论 组合 )</a>
+			</li>
+		
+			<li style="list-style:none;display:none">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl06_Hyperlink1" href="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客.html">卡特兰数 Catalan数 ( ACM 数论 组合 )</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl07_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122569.html">HDOJ HDU 2067 小兔的棋盘 ACM 2067 IN HDU </a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl08_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122538.html">求质数 之 筛法 ( 数论 C语言描述 zz )</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl09_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122537.html">求质数 之 除余法 ( 数论 C语言描述 zz )</a>
+			</li>
+		
+			<li style="list-style:none;">
+				<a id="AjaxHolder_PostComment_ctl07_RelativePostsList_ctl10_Hyperlink1" href="http://www.cppblog.com/MiYu/archive/2010/08/07/122533.html"><zz>The Sieve of Eratosthees ( 爱拉托逊斯筛选法 数论 筛法 )</zz></a>
+			</li>
+		
+			</ul>
+		
+</div>
+</td>
+		</tr>
+		<tr>
+			<td colspan="3"></td>
+		</tr>
+		<tr>
+			<td colspan="3" height="1"><div id="blogsite">网站导航:
+			<a href="http://www.cnblogs.com/">博客园</a>&nbsp;&nbsp;
+			<a href="http://news.cnblogs.com/">IT新闻</a>&nbsp;&nbsp;
+			<a href="http://www.blogjava.net/">BlogJava</a>&nbsp;&nbsp;
+			<a href="http://kb.cnblogs.com/">知识库</a>&nbsp;&nbsp;
+			<a href="http://job.cnblogs.com/">程序员招聘</a>&nbsp;&nbsp;
+			<a href="http://www.cppblog.com/MiYu/archive/2010/08/07/122573.html?opt=admin">管理</a>
+			</div></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+				
+<br>
+
+<br>
+
+</td>
+		</tr>
+	</tbody></table>	
+</div>
+<div id="AjaxHolder_PostComment_ValidationSummary1" style="color:Red;display:none;">
+
+	</div>
+
+</div>
+
+				
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="FooterCell">
+			
+<p id="footer">
+	Powered by: 
+	<br>
+	
+	<a id="Footer1_Hyperlink3" name="Hyperlink1" href="http://www.cppblog.com/" style="font-family:Verdana;font-size:12px;">C++博客</a>
+	<br>
+	Copyright © MiYu
+</p>
+		</td>
+	</tr>
+</tbody></table>
+
+    
+    
+<script type="text/javascript">
+//<![CDATA[
+var Page_ValidationSummaries =  new Array(document.getElementById("AjaxHolder_PostComment_ValidationSummary1"));
+var Page_Validators =  new Array(document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator1"), document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator2"), document.getElementById("AjaxHolder_PostComment_Requiredfieldvalidator4"), document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator3"));
+//]]>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+var AjaxHolder_PostComment_RequiredFieldValidator1 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator1"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator1");
+AjaxHolder_PostComment_RequiredFieldValidator1.controltovalidate = "AjaxHolder_PostComment_tbTitle";
+AjaxHolder_PostComment_RequiredFieldValidator1.errormessage = "请输入标题";
+AjaxHolder_PostComment_RequiredFieldValidator1.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator1.initialvalue = "";
+var AjaxHolder_PostComment_RequiredFieldValidator2 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator2"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator2");
+AjaxHolder_PostComment_RequiredFieldValidator2.controltovalidate = "AjaxHolder_PostComment_tbName";
+AjaxHolder_PostComment_RequiredFieldValidator2.errormessage = "请输入你的姓名";
+AjaxHolder_PostComment_RequiredFieldValidator2.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator2.initialvalue = "";
+var AjaxHolder_PostComment_Requiredfieldvalidator4 = document.all ? document.all["AjaxHolder_PostComment_Requiredfieldvalidator4"] : document.getElementById("AjaxHolder_PostComment_Requiredfieldvalidator4");
+AjaxHolder_PostComment_Requiredfieldvalidator4.controltovalidate = "AjaxHolder_PostComment_CodeNumberTextBox";
+AjaxHolder_PostComment_Requiredfieldvalidator4.errormessage = "请输入验证码";
+AjaxHolder_PostComment_Requiredfieldvalidator4.display = "Dynamic";
+AjaxHolder_PostComment_Requiredfieldvalidator4.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_Requiredfieldvalidator4.initialvalue = "";
+var AjaxHolder_PostComment_RequiredFieldValidator3 = document.all ? document.all["AjaxHolder_PostComment_RequiredFieldValidator3"] : document.getElementById("AjaxHolder_PostComment_RequiredFieldValidator3");
+AjaxHolder_PostComment_RequiredFieldValidator3.controltovalidate = "AjaxHolder_PostComment_tbComment";
+AjaxHolder_PostComment_RequiredFieldValidator3.errormessage = "请输入评论内容";
+AjaxHolder_PostComment_RequiredFieldValidator3.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
+AjaxHolder_PostComment_RequiredFieldValidator3.initialvalue = "";
+var AjaxHolder_PostComment_ValidationSummary1 = document.all ? document.all["AjaxHolder_PostComment_ValidationSummary1"] : document.getElementById("AjaxHolder_PostComment_ValidationSummary1");
+AjaxHolder_PostComment_ValidationSummary1.showmessagebox = "True";
+AjaxHolder_PostComment_ValidationSummary1.showsummary = "False";
+//]]>
+</script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+
+var Page_ValidationActive = false;
+if (typeof(ValidatorOnLoad) == "function") {
+    ValidatorOnLoad();
+}
+
+function ValidatorOnSubmit() {
+    if (Page_ValidationActive) {
+        return ValidatorCommonOnSubmit();
+    }
+    else {
+        return true;
+    }
+}
+        
+document.getElementById('AjaxHolder_PostComment_ValidationSummary1').dispose = function() {
+    Array.remove(Page_ValidationSummaries, document.getElementById('AjaxHolder_PostComment_ValidationSummary1'));
+}
+Sys.Application.initialize();
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator1').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator1'));
+}
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator2').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator2'));
+}
+
+document.getElementById('AjaxHolder_PostComment_Requiredfieldvalidator4').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_Requiredfieldvalidator4'));
+}
+
+document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator3').dispose = function() {
+    Array.remove(Page_Validators, document.getElementById('AjaxHolder_PostComment_RequiredFieldValidator3'));
+}
+//]]>
+</script>
+</form>
+	<script type="text/javascript" src="./卡特兰数 Catalan数 ( ACM 数论 组合 ) - ACM___________________________ - C++博客_files/ShowHidden.js"></script>   
+	<script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-476124-5']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+
+
+</body></html>

@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405772115 source:/home/tjuacm/Documents/HDU1166线段树/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+

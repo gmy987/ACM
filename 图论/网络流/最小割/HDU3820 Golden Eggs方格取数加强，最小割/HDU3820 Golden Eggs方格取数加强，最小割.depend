@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1408092141 source:/home/tjuacm/Documents/图论/网络流/最小割/HDU3820 Golden Eggs方格取数加强，最小割/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<algorithm>
+	<queue>
+

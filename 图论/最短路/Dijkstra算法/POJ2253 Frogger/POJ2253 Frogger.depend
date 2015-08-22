@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1407043286 source:/home/tjuacm/Documents/图论/最短路/Dijkstra算法/POJ2253 Frogger/main.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	<queue>
+	<algorithm>
+	<cmath>
+

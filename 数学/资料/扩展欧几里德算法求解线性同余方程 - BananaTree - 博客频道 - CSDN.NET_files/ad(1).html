@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)http://blog.csdn.net/common/ad.html?t=4&containerId=ad_cen&frmId=ad_frm_0 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CSDN Ad</title>
+    <style type="text/css">
+        body { margin:0px; padding:0px;}
+    </style>
+     <script src="jquery.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="div1"><!--AdForward Begin:-->
+<script type="text/javascript" src="http://csdnim.allyes.com/main/s?user=csdn|blog|banner2&db=csdnim&border=0&local=yes&js=ie" charset="gbk"></script>
+<!--AdForward End--></div>
+<script type="text/javascript">
+    window.onload = function () {
+        if (document.domain != 'blog.csdn.net') {
+            document.domain = "csdn.net";
+        }
+        //这种给广告区域赋值的方式，对于有些JS广告不能完美的显示
+        //top.document.getElementById('ad_cen').innerHTML = document.getElementById('div1').innerHTML;
+
+        var h = document.body.offsetHeight + 2;
+        setTimeout(function () {
+            if (h > 800) h = document.getElementById('div1').offsetHeight + 4;
+            try { top.document.getElementById('ad_frm_0').style.height = h + 'px'; }
+            catch (err) { }
+        }, 100);
+    };
+    $(function() {
+        $("#div1 a").click(function() {
+            top._gaq.push(['_trackEvent', 'function', 'onclick', 'blog_articles_tuijianwenzhang']);
+        });
+    });
+</script>
+
+
+</body></html>

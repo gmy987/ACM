@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1405657779 source:/home/tjuacm/Documents/POJ2488 骑士周游问题/main.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+

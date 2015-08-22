@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1404888175 source:/home/tjuacm/Documents/The Game of 31/main.cpp
+	<iostream>
+	<cstring>
+	<cstdlib>
+
