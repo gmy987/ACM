@@ -1,0 +1,21 @@
+#!/bin/sh
+
+dr_exit() {
+    echo "pppoe-status-exit:$1"
+    exit $1
+}
+
+for net in `ifconfig -l`
+do
+    ip=""
+    pppoe=`echo $net | cut -c1-3`
+    if [ $pppoe == "ppp" ]; then
+        ifconfig $net | awk '{
+           if ($1 == "inet" && ip == "") {ip = $2}
+        }'
+        if [ $ip != ""]; then
+            dr_exit 0
+        fi
+    fi
+done
+dr_exit 1   
