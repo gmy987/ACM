@@ -3,6 +3,47 @@ if v:progname =~? "evim"
 endif
 set nocompatible
 
+filetype off                   " required!
+ 
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+ 
+" let Vundle manage Vundle
+" " required!
+Bundle 'gmarik/vundle'
+"  
+"  " My Bundles here:
+"  "
+"  " original repos on github
+"  Bundle 'tpope/vim-fugitive'
+"  Bundle 'Lokaltog/vim-easymotion'
+"  Bundle 'rstacruz/sparkup', {
+"  'rtp': 'vim/'}
+"  Bundle 'tpope/vim-rails.git'
+"  " vim-scripts repos
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+"  " non github repos
+Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'https://github.com/Lokaltog/vim-powerline.git'
+Bundle 'Valloric/YouCompleteMe'
+"  " ...
+"   
+filetype plugin indent on     " required!
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'   
+let g:ycm_confirm_extra_conf=0   
+let g:ycm_collect_identifiers_from_tag_files = 1 "使用ctags生成的tags文件
+"
+"   " Brief help  -- 此处后面都是vundle的使用命令
+"   " :BundleList          - list configured bundles
+"   " :BundleInstall(!)    - install(update) bundles
+"   " :BundleSearch(!) foo - search(or refresh cache first) for foo
+"   " :BundleClean(!)      - confirm(or auto-approve) removal of unused
+"   bundles
+"   "
+"   " see :h vundle for more details or wiki for FAQ
+"   " NOTE: comments after Bundle command are not allowed.."""""""""""''"''''"''''''
+"  }''''''"""''""""
 "启用Vim的特性，而不是Vi的（必须放到配置的最前边） 
 " 设置编码  
 set encoding=utf-8  
@@ -10,13 +51,21 @@ set fenc=utf-8
 set fileencodings=ucs-bom,utf-8,cp936,gb2312,gb18030,big5   
 "显示行号 
 set number  
+" vim-powerline插件
+set laststatus=2
+set t_Co=256
+let g:Powerline_symbols='unicode'
 "设置默认打开窗口大小 
 set lines=50 columns=100
+
+"隐藏工具栏和滑动条 
+set guioptions=aAce  
 
 "设置语法高亮 
 if &t_Co > 2 || has("gui_running") 
 syntax on 
 endif
+set number
 " 括号自动生成
 ":inoremap ( ()<esc>i
 ":inoremap ) <c-r>=ClosePair(')')<cr>
@@ -24,9 +73,21 @@ endif
 ":inoremap ] <c-r>=ClosePair(']')<cr>
 ":inoremap " ""<esc>i
 ":inoremap ' ''<esc>i
+function! ClosePair(char)
+if getline('.')[col('.') - 1] == a:char
+return "\<right>"
+else
+return a:char
+endif
+endfunction 
+map <C-c> y
+map <C-x> d
+map <C-a> <esc>ggVG
+imap <S-Space> <ESC>
 "------------------------------------------------------------------------------- 
 "	 文本操作设置 "------------------------------------------------------------------------------- 
 set showtabline=2
+set go=aAce
 
 "设置字体 
 set gfn=Menlo:h13  
@@ -133,6 +194,8 @@ colo apprentice
 "colo dante 
 set guifont=Menlo:h13
 "set transparency=20
+:autocmd BufEnter * call DoWordComplete()
+
 nnoremap <silent> <nt> :NERDTree<CR>
 vmap "+y :w !pbcopy<CR><CR> 
 nmap "+p :r !pbpaste<CR><CR>
@@ -186,4 +249,87 @@ function TitleDet()
     endwhile
     call AddTitle()
 endfunction
+
+func! CompileGcc()
+    exec "w"
+    let compilecmd="!gcc "
+    let compileflag="-o %< "
+    if search("mpi\.h") != 0
+        let compilecmd = "!mpicc "
+    endif
+    if search("glut\.h") != 0
+        let compileflag .= " -lglut -lGLU -lGL "
+    endif
+    if search("cv\.h") != 0
+        let compileflag .= " -lcv -lhighgui -lcvaux "
+    endif
+    if search("omp\.h") != 0
+        let compileflag .= " -fopenmp "
+    endif
+    if search("math\.h") != 0
+        let compileflag .= " -lm "
+    endif
+    exec compilecmd." % ".compileflag
+endfunc
+func! CompileGpp()
+    exec "w"
+    let compilecmd="!g++ "
+    let compileflag="-o %< "
+    if search("mpi\.h") != 0
+        let compilecmd = "!mpic++ "
+    endif
+    if search("glut\.h") != 0
+        let compileflag .= " -lglut -lGLU -lGL "
+    endif
+    if search("cv\.h") != 0
+        let compileflag .= " -lcv -lhighgui -lcvaux "
+    endif
+    if search("omp\.h") != 0
+        let compileflag .= " -fopenmp "
+    endif
+    if search("math\.h") != 0
+        let compileflag .= " -lm "
+    endif
+    exec compilecmd." % ".compileflag
+endfunc
+
+func! RunPython()
+        exec "!python %"
+endfunc
+func! CompileJava()
+    exec "!javac %"
+endfunc
+
+
+func! CompileCode()
+        exec "w"
+        if &filetype == "cpp"
+                exec "call CompileGpp()"
+        elseif &filetype == "c"
+                exec "call CompileGcc()"
+        elseif &filetype == "python"
+                exec "call RunPython()"
+        elseif &filetype == "java"
+                exec "call CompileJava()"
+        endif
+endfunc
+
+func! RunResult()
+        exec "w"
+        if search("mpi\.h") != 0
+            exec "!mpirun -np 4 ./%<"
+        elseif &filetype == "cpp"
+            exec "! ./%<"
+        elseif &filetype == "c"
+            exec "! ./%<"
+        elseif &filetype == "python"
+            exec "call RunPython"
+        elseif &filetype == "java"
+            exec "!java %<"
+        endif
+endfunc
+
+map <F5> :call CompileCode()<CR>
+imap <F5> <ESC>:call CompileCode()<CR>
+vmap <F5> <ESC>:call CompileCode()<CR>
 
