@@ -2,9 +2,9 @@
 *
 * Author: daisy
 *
-* Last modified: 2015-07-31 15:56
+* Last modified: 2015-09-03 14:29
 *
-* Filename: 
+* Filename: hdu5316.cpp
 *
 * Description: 
 *
@@ -13,93 +13,85 @@
 #include <cstring>
 #include <iostream>
 #include <algorithm>
-#define lson l,m,rt<<1
-#define rson m+1,r,rt<<1|1
-#define maxn 111111
-#define LL long long 
 #define INF 0x7fffffff
+#define lson l,mid,rt<<1
+#define rson mid+1,r,rt<<1|1
+#define maxn 100005
+#define LL long long 
 
 using namespace std;
-LL a;
 struct Node{
-    LL oo,ee,oe,eo;
+    LL eo,oe,oo,ee;
     LL maxa;
-    friend Node operator + ( Node l , Node r )
-    {
+    friend Node operator + ( Node a , Node b ){
         Node tmp;
-        tmp.oo = max(max(l.oe+r.oo,l.oo+r.eo),max(l.oo,r.oo));
-        tmp.ee = max(max(l.eo+r.ee,l.ee+r.oe),max(l.ee,r.ee));
-        tmp.eo = max(max(l.ee+r.oo,l.eo+r.eo),max(l.eo,r.eo));
-        tmp.oe = max(max(l.oe+r.oe,l.oo+r.ee),max(l.oe,r.oe));
-        tmp.maxa = max(tmp.oo,max(tmp.ee,max(tmp.eo,tmp.oe)));
+        tmp.eo = max(max(a.eo,b.eo),max(a.ee+b.oo,a.eo+b.eo));
+        tmp.oe = max(max(a.oe,b.oe),max(a.oe+b.oe,a.oo+b.ee));
+        tmp.ee = max(max(a.ee,b.ee),max(a.ee+b.oe,a.eo+b.ee));
+        tmp.oo = max(max(a.oo,b.oo),max(a.oe+b.oo,a.oo+b.eo));
+        tmp.maxa = max(max(tmp.eo,tmp.oe),max(tmp.ee,tmp.oo));
         return tmp;
     }
 }tree[maxn<<2];
-void pushup( LL l , LL r , LL rt )
-{
-    tree[rt] = tree[l] + tree[r];
+int a,op,b;
+void pushup( int l , int r , int rt ){
+    tree[rt] = tree[l]+tree[r];
 }
-void build( LL l ,LL r , LL rt )
-{
-    if( l == r )
-    {
-        scanf("%lld",&a);
-        tree[rt].maxa = a;
-        if(l&1)         
-        {
-            tree[rt].oo = a;
-            tree[rt].ee = tree[rt].oe = tree[rt].eo = -INF;
+void build( int l , int r , int rt ){
+    if(l==r){
+        scanf("%d",&a);
+        if(l&1){
+            tree[rt].maxa = tree[rt].oo = (LL)a;
+            tree[rt].oe = tree[rt].eo = tree[rt].ee = -INF;
         }
-        else         
-        {
-            tree[rt].ee = a;
-            tree[rt].oo = tree[rt].eo = tree[rt].oe = -INF;
+        else{
+            tree[rt].maxa = tree[rt].ee = (LL)a;
+            tree[rt].oe = tree[rt].eo = tree[rt].oo = -INF;
         }
         return;
     }
-    LL m = l + r >> 1;
+    int mid = l + r >> 1;
     build(lson);
     build(rson);
     pushup(rt<<1,rt<<1|1,rt);
 }
-void update( LL p , LL val , LL l , LL r , LL rt )
-{
-    if( l == r )
-    {
-        tree[rt].maxa = val;
-        if(l&1) tree[rt].oo = (LL)val,tree[rt].ee = tree[rt].eo = tree[rt].oe = -INF;
-        else tree[rt].ee = val,tree[rt].oo = tree[rt].oe = tree[rt].eo = -INF;
+void update( int p , LL c , int l , int r , int rt ){
+    if( l == r ){
+        tree[rt].maxa = c;
+        if(p&1){
+            tree[rt].oo = c;
+            tree[rt].eo = tree[rt].oe = tree[rt].ee = -INF;
+        }
+        else {
+            tree[rt].ee = c;
+            tree[rt].eo = tree[rt].oe = tree[rt].oo = -INF;
+        }
         return;
     }
-    LL m = l + r >> 1;
-    if( p <= m ) update(p,val,lson);
-    else update(p,val,rson);
+    int mid = l + r >> 1;
+    if( p <= mid ) update(p,c,lson);
+    else update(p,c,rson);
     pushup(rt<<1,rt<<1|1,rt);
 }
-Node query( LL L , LL R , LL l , LL r , LL rt )
-{
-    if( L <= l && r <= R )
-        return tree[rt];
-    LL m = l + r >> 1;
-    if( R <= m ) return query(L,R,lson);
-    else if( L > m ) return query(L,R,rson);
+Node query( int L , int R , int l , int r, int rt ){
+    if( L <= l && r <= R ) return tree[rt];
+    int mid = l + r >> 1;
+    if( R <= mid ) return query(L,R,lson);
+    else if( L > mid ) return query(L,R,rson);
     else return query(L,R,lson)+query(L,R,rson);
 }
-LL m,n,x,y;
-int op;
-int main()
-{
-    LL t;
-    scanf("%lld",&t);
-    while(t--)
-    {
-        scanf("%lld%lld",&n,&m);
+
+int main(){
+    int T;
+    scanf("%d",&T);
+    int n,m;
+    while(T--){
+        scanf("%d%d",&n,&m);
         build(1,n,1);
-        while(m--)
-        {
-            scanf("%d%lld%lld",&op,&x,&y);
-            if(op) update(x,y,1,n,1);
-            else printf("%lld\n",query(x,y,1,n,1).maxa);
+        while(m--){
+            scanf("%d%d%d",&op,&a,&b);
+            if(op) update(a,(LL)b,1,n,1);
+            else printf("%lld\n",query(a,b,1,n,1).maxa);
         }
     }
     return 0;
